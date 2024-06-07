@@ -8,6 +8,7 @@ import com.ruoyi.web.utils_user.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -19,11 +20,28 @@ import java.util.Map;
  * @date 2024-06-07 11:04:10
  */
 @RestController
-@RequestMapping("commodity/sysuser")
+@RequestMapping("/user/")
 public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 获取营业状态
+     * @return
+     */
+    @GetMapping("/shop/status")
+    public R getStatus(Long userId){
+        Integer status = userService.getShopStatus(userId);
+        return R.ok().put("data", status);
+    }
+    /**
+     * 退出登录
+     */
+    @PostMapping("/user/logout")
+    public R logout(HttpSession session){
+        session.invalidate();
+        return R.ok();
+    }
     /**
      * 列表
      */

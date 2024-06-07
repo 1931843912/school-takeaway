@@ -17,5 +17,6 @@ import java.util.Map;
 public interface UserService extends IService<SysUserEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    Integer getShopStatus(Long userid);
 }
 
