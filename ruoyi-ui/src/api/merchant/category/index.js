@@ -10,44 +10,44 @@ export function listCategory(query) {
   })
 }
 
-// 查询用户详细
-export function getUser(userId) {
+// 查询商家新增分类的可见商家
+export function getUser(category_id) {
   return request({
-    url: '/system/user/' + parseStrEmpty(userId),
+    url: '/system/user/' + parseStrEmpty(category_id),
     method: 'get'
   })
 }
 
-// 新增用户
-export function addUser(data) {
+// 新增分类
+export function addCategory(data) {
   return request({
-    url: '/system/user',
+    url: '/merchant/category',
     method: 'post',
     data: data
   })
 }
 
-// 修改用户
-export function updateUser(data) {
+// 修改分类
+export function updateCategory(data) {
   return request({
-    url: '/system/user',
+    url: '/merchant/category',
     method: 'put',
     data: data
   })
 }
 
-// 删除用户
-export function delUser(userId) {
+// 删除分类
+export function delCategory(category_id) {
   return request({
-    url: '/system/user/' + userId,
+    url: '/merchant/category' + category_id,
     method: 'delete'
   })
 }
 
-// 用户密码重置
-export function resetUserPwd(userId, password) {
+// 分类密码重置
+export function resetUserPwd(category_id, password) {
   const data = {
-    userId,
+    category_id,
     password
   }
   return request({
@@ -57,10 +57,10 @@ export function resetUserPwd(userId, password) {
   })
 }
 
-// 用户状态修改
-export function changeUserStatus(userId, status) {
+// 分类状态修改
+export function changeUserStatus(category_id, status) {
   const data = {
-    userId,
+    category_id,
     status
   }
   return request({
@@ -70,7 +70,7 @@ export function changeUserStatus(userId, status) {
   })
 }
 
-// 查询用户个人信息
+// 查询分类个人信息
 export function getUserProfile() {
   return request({
     url: '/system/user/profile',
@@ -78,8 +78,8 @@ export function getUserProfile() {
   })
 }
 
-// 修改用户个人信息
-export function updateUserProfile(data) {
+// 修改分类个人信息
+export function updateCategoryProfile(data) {
   return request({
     url: '/system/user/profile',
     method: 'put',
@@ -87,8 +87,8 @@ export function updateUserProfile(data) {
   })
 }
 
-// 用户密码重置
-export function updateUserPwd(oldPassword, newPassword) {
+// 分类密码重置
+export function updateCategoryPwd(oldPassword, newPassword) {
   const data = {
     oldPassword,
     newPassword
@@ -100,7 +100,7 @@ export function updateUserPwd(oldPassword, newPassword) {
   })
 }
 
-// 用户头像上传
+// 分类头像上传
 export function uploadAvatar(data) {
   return request({
     url: '/system/user/profile/avatar',
@@ -110,9 +110,9 @@ export function uploadAvatar(data) {
 }
 
 // 查询授权角色
-export function getAuthRole(userId) {
+export function getAuthRole(category_id) {
   return request({
-    url: '/system/user/authRole/' + userId,
+    url: '/system/user/authRole/' + category_id,
     method: 'get'
   })
 }
