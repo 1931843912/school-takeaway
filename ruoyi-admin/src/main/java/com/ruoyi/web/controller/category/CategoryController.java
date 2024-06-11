@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.Category;
 import com.ruoyi.category.service.CategoryService;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,22 +30,25 @@ public class CategoryController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list() {
         startPage();
-        List<Category> list = categoryService.selectSysCategoryList();
+        //当前已登录用户的id
+        List<Category> list = categoryService.selectSysCategoryList(SecurityUtils.getUserId());
         return getDataTable(list);
     }
+
     /**
      * 根据id获取菜品及套餐分类信息
      */
-    @PreAuthorize("@ss.hasPermi('system:category:query')")
-    @GetMapping(value = "/{userId}")
-    public AjaxResult getInfo(@PathVariable("userId") Long userId)
+    @PreAuthorize("@ss.hasPermi('merchant:category:query')")
+    @GetMapping(value = "/{categoryId}")
+    public AjaxResult selectSysCategoryByCategoryId(@PathVariable("categoryId") Long categoryId)
     {
-        return success(categoryService.selectSysCategoryByUserId(userId));
+        return success(categoryService.selectSysCategoryByCategoryId(categoryId,SecurityUtils.getUserId()));
     }
+
     /**
      * 新增菜品及套餐分类
      */
-    @PreAuthorize("@ss.hasPermi('system:category:add')")
+    @PreAuthorize("@ss.hasPermi('merchant:category:add')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Category category)
@@ -55,7 +59,7 @@ public class CategoryController extends BaseController {
     /**
      * 修改菜品及套餐分类
      */
-    @PreAuthorize("@ss.hasPermi('system:category:edit')")
+    @PreAuthorize("@ss.hasPermi('merchant:category:edit')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Category category)
@@ -66,7 +70,7 @@ public class CategoryController extends BaseController {
     /**
      * 删除菜品及套餐分类
      */
-    @PreAuthorize("@ss.hasPermi('system:category:remove')")
+    @PreAuthorize("@ss.hasPermi('merchant:category:remove')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

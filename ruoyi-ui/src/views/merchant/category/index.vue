@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="${comment}" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入${comment}"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="分类名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -17,29 +9,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="顺序" prop="sort">
-        <el-input
-          v-model="queryParams.sort"
-          placeholder="请输入顺序"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="创建人" prop="createUser">
-        <el-input
-          v-model="queryParams.createUser"
-          placeholder="请输入创建人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="修改人" prop="updateUser">
-        <el-input
-          v-model="queryParams.updateUser"
-          placeholder="请输入修改人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="分类状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择分类状态" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_normal_disable"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -55,7 +33,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:category:add']"
+          v-hasPermi="['merchant:category:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -66,7 +44,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:category:edit']"
+          v-hasPermi="['merchant:category:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -77,7 +55,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:category:remove']"
+          v-hasPermi="['merchant:category:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -87,7 +65,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:category:export']"
+          v-hasPermi="['merchant:category:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -96,11 +74,23 @@
     <el-table v-loading="loading" :data="categoryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键" align="center" prop="id" />
-      <el-table-column label="${comment}" align="center" prop="userId" />
-      <el-table-column label="类型   1 菜品分类 2 套餐分类" align="center" prop="type" />
       <el-table-column label="分类名称" align="center" prop="name" />
       <el-table-column label="顺序" align="center" prop="sort" />
-      <el-table-column label="分类状态 0:禁用，1:启用" align="center" prop="status" />
+      <el-table-column label="分类状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建人" align="center" prop="createUser" />
       <el-table-column label="修改人" align="center" prop="updateUser" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -110,14 +100,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:category:edit']"
+            v-hasPermi="['merchant:category:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:category:remove']"
+            v-hasPermi="['merchant:category:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -134,20 +124,20 @@
     <!-- 添加或修改菜品及套餐分类对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="${comment}" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入${comment}" />
-        </el-form-item>
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="顺序" prop="sort">
           <el-input v-model="form.sort" placeholder="请输入顺序" />
         </el-form-item>
-        <el-form-item label="创建人" prop="createUser">
-          <el-input v-model="form.createUser" placeholder="请输入创建人" />
-        </el-form-item>
-        <el-form-item label="修改人" prop="updateUser">
-          <el-input v-model="form.updateUser" placeholder="请输入修改人" />
+        <el-form-item label="分类状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio
+              v-for="dict in dict.type.sys_normal_disable"
+              :key="dict.value"
+              :label="parseInt(dict.value)"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -163,6 +153,7 @@ import { listCategory, getCategory, delCategory, addCategory, updateCategory } f
 
 export default {
   name: "Category",
+  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -187,13 +178,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: null,
-        type: null,
         name: null,
-        sort: null,
         status: null,
-        createUser: null,
-        updateUser: null
       },
       // 表单参数
       form: {},
@@ -306,7 +292,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/category/export', {
+      this.download('merchant/category/export', {
         ...this.queryParams
       }, `category_${new Date().getTime()}.xlsx`)
     }

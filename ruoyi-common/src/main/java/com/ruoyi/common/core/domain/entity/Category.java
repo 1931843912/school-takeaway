@@ -1,5 +1,8 @@
 package com.ruoyi.common.core.domain.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -8,6 +11,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 /**
  * 菜品及套餐分类对象
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

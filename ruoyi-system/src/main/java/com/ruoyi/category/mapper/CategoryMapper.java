@@ -16,15 +16,13 @@ public interface CategoryMapper {
      * @return 菜品及套餐分类集合
      */
 //    @Select("select * from sys_category")
-    public List<Category> selectSysCategoryList();
+    public List<Category> selectSysCategoryList(Long userId);
 
     /**
      * 查询菜品及套餐分类
-     *
-     * @param userId 菜品及套餐分类主键
      * @return 菜品及套餐分类
      */
-    public Category selectSysCategoryByUserId(Long userId);
+    public Category selectSysCategoryByCategoryId(Category category);
     /**
      * 新增菜品及套餐分类
      *

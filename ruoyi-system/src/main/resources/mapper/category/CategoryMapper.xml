@@ -24,11 +24,11 @@
 
     <select id="selectSysCategoryList" parameterType="Category" resultMap="CategoryResult">
         <include refid="selectSysCategoryVo"/>
+        where user_id = #{userId} and type = 2
     </select>
 
-    <select id="selectSysCategoryByUserId" parameterType="Long" resultMap="CategoryResult">
-        <include refid="selectSysCategoryVo"/>
-        where userId = #{userId}
+    <select id="selectSysCategoryByCategoryId" parameterType="Category" resultMap="CategoryResult">
+       select * from sys_category where id = #{id} and user_id = #{userId} and type = 2
     </select>
 
     <insert id="insertSysCategory" parameterType="Category" useGeneratedKeys="true" keyProperty="id">

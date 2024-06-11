@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.entity.Category;
 
 import com.ruoyi.category.service.CategoryService;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,20 +25,22 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 菜品及套餐分类
      */
     @Override
-    public List<Category> selectSysCategoryList() {
-        return categoryMapper.selectSysCategoryList();
+    public List<Category> selectSysCategoryList(Long userId) {
+        return categoryMapper.selectSysCategoryList(userId);
     }
     /**
      * 查询菜品及套餐分类(商家)
-     *
-     * @param userId 菜品及套餐分类主键
      * @return 菜品及套餐分类
      */
     @Override
-    public Category selectSysCategoryByUserId(Long userId)
+    public Category selectSysCategoryByCategoryId(Long categoryId,Long userId)
     {
-        return categoryMapper.selectSysCategoryByUserId(userId);
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setUserId(userId);
+        return categoryMapper.selectSysCategoryByCategoryId(category);
     }
+
     /**
      * 新增菜品及套餐分类
      *
@@ -47,7 +50,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public int insertSysCategory(Category category)
     {
+        Long userId = SecurityUtils.getUserId();
+        //创建时间
         category.setCreateTime(DateUtils.getNowDate());
+        //type设置
+        category.setType(2L);
+        //创建人
+        category.setCreateUser(userId);
+        category.setUserId(userId);
         return categoryMapper.insertSysCategory(category);
     }
 
@@ -61,6 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     public int updateSysCategory(Category category)
     {
         category.setUpdateTime(DateUtils.getNowDate());
+        category.setUpdateUser(SecurityUtils.getUserId());
         return categoryMapper.updateSysCategory(category);
     }
 

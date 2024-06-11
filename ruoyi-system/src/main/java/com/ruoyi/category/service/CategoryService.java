@@ -1,6 +1,7 @@
 package com.ruoyi.category.service;
 
 import com.ruoyi.common.core.domain.entity.Category;
+import com.ruoyi.common.utils.SecurityUtils;
 
 import java.util.List;
 
@@ -13,14 +14,13 @@ public interface CategoryService {
      *
      * @return 菜品及套餐分类集合
      */
-    public List<Category> selectSysCategoryList();
+    public List<Category> selectSysCategoryList(Long userId);
+
     /**
      * 查询菜品及套餐分类(商家)
-     *
-     * @param userId 菜品及套餐分类主键
-     * @return 菜品及套餐分类
      */
-    public Category selectSysCategoryByUserId(Long userId);
+    public Category selectSysCategoryByCategoryId(Long categoryId, Long userId);
+
     /**
      * 新增菜品及套餐分类
      *
