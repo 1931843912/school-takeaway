@@ -22,3 +22,4 @@ public interface SysDishService extends IService<SysDishEntity> {
 
     List<DishVO> getDishByIdList(Long id);
 }
+
