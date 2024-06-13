@@ -135,7 +135,7 @@
             <el-radio
               v-for="dict in dict.type.sys_normal_disable"
               :key="dict.value"
-              :label="dict.value"
+              :label="parseInt(dict.value)"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -191,9 +191,6 @@ export default {
         sort: [
           { required: true, message: "顺序不能为空", trigger: "blur" }
         ],
-        status: [
-          { required: true, message: "分类状态不能为空", trigger: "change" }
-        ]
       }
     };
   },
