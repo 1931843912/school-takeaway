@@ -24,7 +24,11 @@
 
     <select id="selectSysCategoryList" parameterType="Category" resultMap="CategoryResult">
         <include refid="selectSysCategoryVo"/>
-        where user_id = #{userId} and type = 2
+        <where>
+<!--            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>-->
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+        and type = 2
     </select>
 
     <select id="selectSysCategoryByCategoryId" parameterType="Category" resultMap="CategoryResult">
