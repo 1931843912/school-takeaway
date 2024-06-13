@@ -63,6 +63,7 @@ public class BaseController
         PageDomain pageDomain = TableSupport.buildPageRequest();
         if (StringUtils.isNotEmpty(pageDomain.getOrderBy()))
         {
+            SecurityUtils.getUserId()
             String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
             PageHelper.orderBy(orderBy);
         }
