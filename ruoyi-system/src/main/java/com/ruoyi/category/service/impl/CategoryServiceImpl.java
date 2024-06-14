@@ -11,12 +11,14 @@ import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * 菜品及套餐分类Service业务层处理
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    @Autowired
+    @Resource
     private CategoryMapper categoryMapper;
 
     /**

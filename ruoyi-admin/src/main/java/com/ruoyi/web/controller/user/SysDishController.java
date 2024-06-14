@@ -24,7 +24,7 @@ import java.util.Map;
  * @date 2024-06-07 10:57:43
  */
 @RestController
-@RequestMapping("user/setmeal/dish")
+@RequestMapping("user/setmeal/dish/1")
 public class SysDishController {
     @Autowired
     private SysDishService sysDishService;

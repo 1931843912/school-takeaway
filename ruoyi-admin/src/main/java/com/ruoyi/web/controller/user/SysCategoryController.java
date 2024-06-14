@@ -19,7 +19,7 @@ import java.util.Map;
  * @date 2024-06-07 10:57:43
  */
 @RestController
-@RequestMapping("/user/category")
+@RequestMapping("/user/category/1")
 public class SysCategoryController {
     @Autowired
     private SysCategoryService sysCategoryService;
