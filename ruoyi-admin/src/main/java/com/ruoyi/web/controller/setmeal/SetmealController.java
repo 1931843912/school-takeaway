@@ -46,6 +46,17 @@ public class SetmealController extends BaseController {
     }
 
     /**
+     * 查询套餐列表
+     */
+    @PreAuthorize("@ss.hasPermi('merchant:setmeal:dishlist')")
+    @GetMapping("/dishlist")
+    public TableDataInfo dishList() {
+        startPage();
+        List<Setmeal> list = setmealService.selectDishList();
+        return getDataTable(list);
+    }
+
+    /**
      * 导出套餐列表
      */
     @PreAuthorize("@ss.hasPermi('merchant:setmeal:export')")

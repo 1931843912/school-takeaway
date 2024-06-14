@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择类型" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_category_list"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="分类名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -33,7 +43,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['merchant:category:add']"
+          v-hasPermi="['system:category:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -44,7 +54,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['merchant:category:edit']"
+          v-hasPermi="['system:category:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -55,7 +65,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['merchant:category:remove']"
+          v-hasPermi="['system:category:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -65,7 +75,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['merchant:category:export']"
+          v-hasPermi="['system:category:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -73,7 +83,13 @@
 
     <el-table v-loading="loading" :data="categoryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键" align="center" prop="id" />
+      <!-- <el-table-column label="主键" align="center" prop="id" /> -->
+      <!-- <el-table-column label="所属商家" align="center" prop="userId" /> -->
+      <el-table-column label="类型" align="center" prop="type">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_category_list" :value="scope.row.type"/>
+        </template>
+      </el-table-column>
       <el-table-column label="分类名称" align="center" prop="name" />
       <el-table-column label="顺序" align="center" prop="sort" />
       <el-table-column label="分类状态" align="center" prop="status">
@@ -100,14 +116,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['merchant:category:edit']"
+            v-hasPermi="['system:category:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['merchant:category:remove']"
+            v-hasPermi="['system:category:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -124,6 +140,15 @@
     <!-- 添加或修改菜品及套餐分类对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="类型" prop="type">
+          <el-radio-group v-model="form.type">
+            <el-radio
+              v-for="dict in dict.type.sys_category_list"
+              :key="dict.value"
+              :label="parseInt(dict.value)"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入分类名称" />
         </el-form-item>
@@ -153,7 +178,7 @@ import { listCategory, getCategory, delCategory, addCategory, updateCategory } f
 
 export default {
   name: "Category",
-  dicts: ['sys_normal_disable'],
+  dicts: ['sys_normal_disable', 'sys_category_list'],
   data() {
     return {
       // 遮罩层
@@ -178,6 +203,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        type: null,
         name: null,
         status: null,
       },
@@ -185,12 +211,18 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        type: [
+          { required: true, message: "类型不能为空", trigger: "change" }
+        ],
         name: [
           { required: true, message: "分类名称不能为空", trigger: "blur" }
         ],
         sort: [
           { required: true, message: "顺序不能为空", trigger: "blur" }
         ],
+        status:[
+          { required: true, message: "分类状态不能为空", trigger: "blur" }
+        ]
       }
     };
   },
@@ -292,7 +324,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('merchant/category/export', {
+      this.download('system/category/export', {
         ...this.queryParams
       }, `category_${new Date().getTime()}.xlsx`)
     }

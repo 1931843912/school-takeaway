@@ -58,5 +58,7 @@ public interface SetmealMapper {
      */
     public int deleteSetmealByIds(Long[] ids);
 
+    List<Setmeal> selectDishList(Long userId);
+
     // int changeSetmealStatus(Setmeal setmeal);
 }

@@ -1,19 +1,16 @@
-package com.ruoyi.common.core.domain.entity;
+package com.ruoyi.category.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 菜品及套餐分类对象
+ * 菜品及套餐分类对象 sys_category
+ *
+ * @author xiaozhu
+ * @date 2024-06-14
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Category extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -23,9 +20,9 @@ public class Category extends BaseEntity {
     private Long id;
 
     /**
-     * $column.columnComment
+     * 所属商家
      */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "所属商家")
     private Long userId;
 
     /**

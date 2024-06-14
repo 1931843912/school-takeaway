@@ -9,6 +9,13 @@ export function listSetmeal(query) {
   })
 }
 
+//查询菜品列表
+export function ListDish(){
+  return request({
+    url: '/merchant/setmeal/dishlist',
+    method: 'get'
+  })
+}
 // 查询套餐详细
 export function getSetmeal(id) {
   return request({

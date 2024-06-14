@@ -31,6 +31,16 @@
         </where>
     </select>
 
+
+    <select id="selectDishList" parameterType="int" resultType="SetmealResult">
+        <include refid="selectSetmealVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+
+
     <select id="selectSetmealById" parameterType="Long" resultMap="SetmealResult">
         <include refid="selectSetmealVo"/>
         where id = #{id}

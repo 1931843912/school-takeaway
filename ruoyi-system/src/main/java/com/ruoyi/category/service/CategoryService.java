@@ -1,25 +1,32 @@
 package com.ruoyi.category.service;
 
-import com.ruoyi.common.core.domain.entity.Category;
-import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.category.domain.entity.Category;
 
 import java.util.List;
 
+
 /**
  * 菜品及套餐分类Service接口
+ *
+ * @author xiaozhu
+ * @date 2024-06-14
  */
 public interface CategoryService {
     /**
-     * 查询菜品及套餐分类列表
+     * 查询菜品及套餐分类
      *
-     * @return 菜品及套餐分类集合
+     * @param id 菜品及套餐分类主键
+     * @return 菜品及套餐分类
      */
-    public List<Category> selectSysCategoryList(Long userId);
+    public Category selectCategoryById(Long id);
 
     /**
-     * 查询菜品及套餐分类(商家)
+     * 查询菜品及套餐分类列表
+     *
+     * @param category 菜品及套餐分类
+     * @return 菜品及套餐分类集合
      */
-    public Category selectSysCategoryByCategoryId(Long categoryId, Long userId);
+    public List<Category> selectCategoryList(Category category);
 
     /**
      * 新增菜品及套餐分类
@@ -27,7 +34,7 @@ public interface CategoryService {
      * @param category 菜品及套餐分类
      * @return 结果
      */
-    public int insertSysCategory(Category category);
+    public int insertCategory(Category category);
 
     /**
      * 修改菜品及套餐分类
@@ -35,7 +42,7 @@ public interface CategoryService {
      * @param category 菜品及套餐分类
      * @return 结果
      */
-    public int updateSysCategory(Category category);
+    public int updateCategory(Category category);
 
     /**
      * 批量删除菜品及套餐分类
@@ -43,7 +50,7 @@ public interface CategoryService {
      * @param ids 需要删除的菜品及套餐分类主键集合
      * @return 结果
      */
-    public int deleteSysCategoryByIds(Long[] ids);
+    public int deleteCategoryByIds(Long[] ids);
 
     /**
      * 删除菜品及套餐分类信息
@@ -51,5 +58,5 @@ public interface CategoryService {
      * @param id 菜品及套餐分类主键
      * @return 结果
      */
-    public int deleteSysCategoryById(Long id);
+    public int deleteCategoryById(Long id);
 }

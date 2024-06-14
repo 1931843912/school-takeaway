@@ -59,4 +59,6 @@ public interface ISetmealService {
     public int deleteSetmealById(Long id);
 
     int changeSetmealStatus(Setmeal setmeal);
+
+    List<Setmeal> selectDishList();
 }

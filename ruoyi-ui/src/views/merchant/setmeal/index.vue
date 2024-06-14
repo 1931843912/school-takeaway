@@ -92,9 +92,15 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="套餐分类" prop="categoryId">
-          <!-- 使用下拉框形式 -->‘
+          <!-- 使用下拉框形式 -->
           <el-select v-model="form.categoryId" placeholder="请选择套餐分类">
             <el-option v-for="dict in categoryList" :key="dict.id" :label="dict.name" :value="dict.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 多选框选中数据 -->
+          <el-form-item label="套餐项目" prop="dishItems">
+          <el-select v-model="form.dishItems" multiple placeholder="请选择套餐项目">
+            <el-option v-for="dict in dishList" :key="dict.id" :label="dict.name" :value="dict.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="套餐名称" prop="name">
@@ -125,7 +131,7 @@
 </template>
 
 <script>
-import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal,changeSetmealStatus } from "@/api/merchant/setmeal/index";
+import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal,ListDish } from "@/api/merchant/setmeal/index";
 import { listCategory } from '@/api/merchant/category/index'
 export default {
   name: "Setmeal",
@@ -159,6 +165,8 @@ export default {
       },
       //分类列表
       categoryList: [],
+      //菜品列表
+      dishList: [],
       // 表单参数
       form: {},
       // 表单校验
@@ -187,6 +195,7 @@ export default {
   created() {
     this.getList();
     this.getCategoryList();
+    this.getDishList();
   },
   methods: {
     /** 查询套餐列表 */
@@ -207,9 +216,17 @@ export default {
         this.loading = false;
       });
     },
+    // 查询菜品列表
+    getDishList(){
+      this.loading = true;
+      ListDish(this.queryParams).then(response => {
+        this.dishList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
     // 套餐状态修改
     handleStatusChange(row) {
-      console.log(row)
       let text = row.status === "0" ? "起售" : "停售";
       this.$modal.confirm('确认要"' + text + '""' + row.name + '"套餐吗？').then(function() {
         return changeSetmealStatus(row.id,row.status);
@@ -238,7 +255,8 @@ export default {
         createTime: null,
         updateTime: null,
         createUser: null,
-        updateUser: null
+        updateUser: null,
+        dishItems:null
       };
       this.resetForm("form");
     },

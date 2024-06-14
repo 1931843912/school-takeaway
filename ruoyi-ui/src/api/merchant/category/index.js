@@ -42,17 +42,3 @@ export function delCategory(id) {
     method: 'delete'
   })
 }
-
-//套餐状态修改
-export function changeSetmealStatus(id,status){
-  const data ={
-    id,
-    status
-  }
-  console.log(222)
-  return request({
-    url: '/merchant/category/changeSetmealStatus/',
-    method: 'put',
-    data:data
-  })
-}

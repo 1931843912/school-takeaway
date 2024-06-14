@@ -99,12 +99,17 @@ public class SetmealServiceImpl implements ISetmealService {
         setmeal.setUpdateTime(DateUtils.getNowDate());
         //状态反转
         Long status = setmeal.getStatus();
-        if(status == 0){
+        if (status == 0) {
             status = 1L;
-        }else {
+        } else {
             status = 0L;
         }
         setmeal.setStatus(status);
         return setmealMapper.updateSetmeal(setmeal);
+    }
+
+    @Override
+    public List<Setmeal> selectDishList() {
+        return setmealMapper.selectDishList(SecurityUtils.getUserId());
     }
 }

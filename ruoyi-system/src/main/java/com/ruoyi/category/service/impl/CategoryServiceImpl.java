@@ -2,9 +2,8 @@ package com.ruoyi.category.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.category.mapper.CategoryMapper;
-import com.ruoyi.common.core.domain.entity.Category;
-
 import com.ruoyi.category.service.CategoryService;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 /**
  * 菜品及套餐分类Service业务层处理
+ *
+ * @author xiaozhu
+ * @date 2024-06-14
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -20,25 +22,28 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     /**
+     * 查询菜品及套餐分类
+     *
+     * @param id 菜品及套餐分类主键
+     * @return 菜品及套餐分类
+     */
+    @Override
+    public Category selectCategoryById(Long id) {
+        Category category = new Category();
+        category.setUserId(SecurityUtils.getUserId());
+        category.setId(id);
+        return categoryMapper.selectCategoryById(category);
+    }
+
+    /**
      * 查询菜品及套餐分类列表
      *
+     * @param category 菜品及套餐分类
      * @return 菜品及套餐分类
      */
     @Override
-    public List<Category> selectSysCategoryList(Long userId) {
-        return categoryMapper.selectSysCategoryList(userId);
-    }
-    /**
-     * 查询菜品及套餐分类(商家)
-     * @return 菜品及套餐分类
-     */
-    @Override
-    public Category selectSysCategoryByCategoryId(Long categoryId,Long userId)
-    {
-        Category category = new Category();
-        category.setId(categoryId);
-        category.setUserId(userId);
-        return categoryMapper.selectSysCategoryByCategoryId(category);
+    public List<Category> selectCategoryList(Category category) {
+        return categoryMapper.selectCategoryList(category);
     }
 
     /**
@@ -48,17 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 结果
      */
     @Override
-    public int insertSysCategory(Category category)
-    {
-        Long userId = SecurityUtils.getUserId();
-        //创建时间
+    public int insertCategory(Category category) {
         category.setCreateTime(DateUtils.getNowDate());
-        //type设置
-        category.setType(2L);
-        //创建人
-        category.setCreateUser(userId);
-        category.setUserId(userId);
-        return categoryMapper.insertSysCategory(category);
+        return categoryMapper.insertCategory(category);
     }
 
     /**
@@ -68,11 +65,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 结果
      */
     @Override
-    public int updateSysCategory(Category category)
-    {
+    public int updateCategory(Category category) {
         category.setUpdateTime(DateUtils.getNowDate());
-        category.setUpdateUser(SecurityUtils.getUserId());
-        return categoryMapper.updateSysCategory(category);
+        return categoryMapper.updateCategory(category);
     }
 
     /**
@@ -82,9 +77,8 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 结果
      */
     @Override
-    public int deleteSysCategoryByIds(Long[] ids)
-    {
-        return categoryMapper.deleteSysCategoryByIds(ids);
+    public int deleteCategoryByIds(Long[] ids) {
+        return categoryMapper.deleteCategoryByIds(ids);
     }
 
     /**
@@ -94,8 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 结果
      */
     @Override
-    public int deleteSysCategoryById(Long id)
-    {
-        return categoryMapper.deleteSysCategoryById(id);
+    public int deleteCategoryById(Long id) {
+        return categoryMapper.deleteCategoryById(id);
     }
 }
