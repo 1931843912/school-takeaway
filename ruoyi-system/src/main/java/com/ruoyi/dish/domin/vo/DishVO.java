@@ -1,8 +1,8 @@
-package com.ruoyi.web.entity_admin.vo;
+package com.ruoyi.dish.domin.vo;
 
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.ruoyi.web.entity_admin.SysDishFlavorEntity;
+import com.ruoyi.dish.domin.DishFlavorEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -50,12 +49,12 @@ public class DishVO {
     private LocalDateTime updateTime;
 
     /**
-     * 分类名称
+     * 分类id
      * */
-    private String categoryName;
+    private Long categoryId;
 
     /**
      * 菜品关联口味
      * */
-    private List<SysDishFlavorEntity> flavors = new ArrayList<>();
+    private List<DishFlavorEntity> flavors = new ArrayList<>();
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ruoyi.dish.domin.dto.DishDTO">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ruoyi.dish.domin.dto.DishDTO" id="DishMap">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="image" column="image"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="categoryId" column="category_id"/>
+        <collection property="flavors" ofType="com.ruoyi.dish.domin.DishFlavorEntity">
+            <id column="id" property="id"/>
+            <result property="userId" column="user_id"/>
+            <result column="dish_id" property="dishId"/>
+            <result column="name" property="name"/>
+            <result column="value" property="value" />
+        </collection>
+    </resultMap>
+
+    <select id="getDishWithFlavorById" resultMap="DishMap">
+        select d.* ,
+               df.id AS flavor_id,
+               df.user_id AS flavor_user_id,
+               df.dish_id AS flavor_dish_id,
+               df.name AS flavor_name,
+               df.value AS flavor_value
+        from
+             sys_dish d
+        left outer join
+             sys_dish_flavor df on d.id  = df.dish_id
+        WHERE
+            d.id = #{id}
+    </select>
+
+    <select id="pageQuery" resultMap="com.ruoyi.dish.domin.vo.DishVO">
+        select d.* , c.name as categoryName
+        from sys_dish d left outer join sys_category c on d.category_id  = c.id
+        <where>
+            <if test="name!= null">com.ruoyi.dish.domin.vo.DishVO
+                and  d.name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId!= null">
+                and  d.category_id = #{categoryId}
+            </if>
+            <if test="name!= null">
+                and  d.status = #{status}
+            </if>
+        </where>
+        order by d.create_time desc 
+    </select>
+
+</mapper>

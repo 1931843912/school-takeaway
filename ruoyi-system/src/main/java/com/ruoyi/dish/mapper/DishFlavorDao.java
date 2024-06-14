@@ -1,10 +1,11 @@
-package com.ruoyi.web.mapper.admin;
+package com.ruoyi.dish.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ruoyi.web.entity_admin.SysDishEntity;
-import com.ruoyi.web.entity_admin.SysDishFlavorEntity;
 
+
+import com.ruoyi.dish.domin.DishEntity;
+import com.ruoyi.dish.domin.DishFlavorEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,11 +18,11 @@ import java.util.List;
  * @date 2024-06-13 20:43:43
  */
 @Mapper
-public interface SysDishFlavorDao extends BaseMapper<SysDishEntity> {
+public interface DishFlavorDao extends BaseMapper<DishEntity> {
 
     /**
     * 批量插入口味数据
      * @param
     * */
-    void insertBatch(List<SysDishFlavorEntity> flavors);
+    void insertBatch(List<DishFlavorEntity> flavors);
 }

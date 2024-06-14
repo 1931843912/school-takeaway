@@ -1,4 +1,4 @@
-package com.ruoyi.web.entity_admin;
+package com.ruoyi.dish.domin;
 
 import com.ruoyi.common.annotation.Excel;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class SysDishFlavorEntity implements Serializable {
+public class DishFlavorEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
