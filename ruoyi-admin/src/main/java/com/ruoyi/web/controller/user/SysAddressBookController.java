@@ -50,7 +50,7 @@ public class SysAddressBookController {
      */
     @GetMapping("/{id}")
     public R info(@PathVariable("id") Long id){
-		SysAddressBookEntity sysAddressBook = sysAddressBookService.getById(id);
+		SysAddressBookEntity sysAddressBook = (SysAddressBookEntity) sysAddressBookService.getById(id);
 
         return R.ok().put("sysAddressBook", sysAddressBook);
     }

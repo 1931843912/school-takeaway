@@ -5,8 +5,12 @@ import com.ruoyi.user.entity.context.BaseContext;
 import com.ruoyi.user.entity.po.AddressBook;
 import com.ruoyi.user.result.Result;
 import com.ruoyi.user.service.UserAddressBookService;
+import com.ruoyi.web.entity_user.SysAddressBookEntity;
+import com.ruoyi.web.service_user.SysAddressBookService;
+import com.ruoyi.web.utils_user.CopyTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,6 +23,8 @@ public class AddressBookController {
 
     @Resource
     private UserAddressBookService userAddressBookService;
+    @Autowired
+    SysAddressBookService sysAddressBookService;
 
     /**
      * 查询当前登录用户的所有地址信息
@@ -43,7 +49,8 @@ public class AddressBookController {
     @PostMapping
     @ApiOperation("新增地址")
     public Result save(@RequestBody AddressBook addressBook) {
-        userAddressBookService.save(addressBook);
+//        userAddressBookService.save(addressBook);
+        sysAddressBookService.save(CopyTools.copy(addressBook, SysAddressBookEntity.class));
         return Result.success();
     }
 
