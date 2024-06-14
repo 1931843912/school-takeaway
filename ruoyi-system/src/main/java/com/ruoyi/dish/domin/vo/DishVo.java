@@ -1,7 +1,8 @@
 package com.ruoyi.dish.domin.vo;
 
 
-import com.ruoyi.dish.domin.DishFlavor;
+
+import com.ruoyi.dish.domin.DishFlavorEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +41,7 @@ public class DishVo implements Serializable {
     //分类名称
     private String categoryName;
     //菜品关联的口味
-    private List<DishFlavor> flavors = new ArrayList<>();
+    private List<DishFlavorEntity> flavors = new ArrayList<>();
 
     //private Integer copies;
 }

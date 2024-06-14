@@ -76,7 +76,7 @@ public class DishController extends BaseController {
         return Result.success(dishes);
     }
 
-    @PostMapping("/")
+    @PutMapping("/")
     @Log(title = "修改菜品及口味", businessType = BusinessType.UPDATE)
     @ApiOperation("修改菜品")
     public Result updateDishWithFlavor(@RequestBody DishDTO dishDTO) {
