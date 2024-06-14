@@ -1,4 +1,4 @@
-package com.ruoyi.dish.domin;
+package com.ruoyi.web.entity_admin;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_dish")
-public class DishEntity implements Serializable {
+public class SysDishEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -1,7 +1,7 @@
-package com.ruoyi.dish.domin.dto;
+package com.ruoyi.web.entity_admin.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.ruoyi.dish.domin.DishFlavorEntity;
+import com.ruoyi.web.entity_admin.SysDishFlavorEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -72,5 +72,5 @@ public class DishDTO implements Serializable {
     /**
      * 口味
      */
-    private List<DishFlavorEntity> flavors = new ArrayList<>();
+    private List<SysDishFlavorEntity> flavors = new ArrayList<>();
 }

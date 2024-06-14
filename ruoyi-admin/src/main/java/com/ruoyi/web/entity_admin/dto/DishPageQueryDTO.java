@@ -1,4 +1,4 @@
-package com.ruoyi.dish.domin.dto;
+package com.ruoyi.web.entity_admin.dto;
 
 import lombok.Data;
 import java.io.Serializable;
