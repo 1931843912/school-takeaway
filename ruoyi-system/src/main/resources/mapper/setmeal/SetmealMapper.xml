@@ -35,4 +35,63 @@
         <include refid="selectSetmealVo"/>
         where id = #{id}
     </select>
+
+    <insert id="insertSetmeal" parameterType="Setmeal" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_setmeal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="price != null">price,</if>
+            <if test="status != null">status,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="image != null and image != ''">image,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="updateUser != null">update_user,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="price != null">#{price},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="image != null and image != ''">#{image},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSetmeal" parameterType="Setmeal">
+        update sys_setmeal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="image != null and image != ''">image = #{image},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSetmealById" parameterType="Long">
+        delete from sys_setmeal where id = #{id}
+    </delete>
+
+    <delete id="deleteSetmealByIds" parameterType="String">
+        delete from sys_setmeal where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
