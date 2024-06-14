@@ -1,15 +1,26 @@
 package com.ruoyi.web.controller.user;
 
 
+import com.ruoyi.user.entity.constant.JwtClaimsConstant;
+import com.ruoyi.user.entity.dto.UserLoginDTO;
+import com.ruoyi.user.entity.po.User;
+import com.ruoyi.user.entity.properties.JwtProperties;
+import com.ruoyi.user.entity.vo.UserLoginVO;
+import com.ruoyi.user.result.Result;
+import com.ruoyi.user.service.WeChatUserService;
+import com.ruoyi.user.utils.JwtUtil;
 import com.ruoyi.web.entity_user.SysUserEntity;
 import com.ruoyi.web.service_user.UserService;
 import com.ruoyi.web.utils_user.PageUtils;
 import com.ruoyi.web.utils_user.R;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,11 +30,16 @@ import java.util.Map;
  * @email 2657970023@qq.com
  * @date 2024-06-07 11:04:10
  */
+@Slf4j
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private WeChatUserService weChatUserService;
+    @Autowired
+    private JwtProperties jwtProperties;
 
     /**
      * 获取营业状态
@@ -43,54 +59,28 @@ public class UserController {
         return R.ok();
     }
     /**
-     * 列表
+     * 微信登录
+     * @param userLoginDTO
+     * @return
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = userService.queryPage(params);
+    @PostMapping("/user/login")
+    @ApiOperation("微信登录")
+    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
+        log.info("微信用户登录：{}",userLoginDTO.getCode());
 
-        return R.ok().put("page", page);
+        //微信登录
+        User user = weChatUserService.wxLogin(userLoginDTO);
+
+        //为微信用户生成jwt令牌
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.USER_ID,user.getId());
+        String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+
+        UserLoginVO userLoginVO = UserLoginVO.builder()
+                .id(user.getId())
+                .openid(user.getOpenid())
+                .token(token)
+                .build();
+        return Result.success(userLoginVO);
     }
-
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{userId}")
-    public R info(@PathVariable("userId") Long userId){
-		SysUserEntity sysUser = userService.getById(userId);
-
-        return R.ok().put("sysUser", sysUser);
-    }
-
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody SysUserEntity sysUser){
-		userService.save(sysUser);
-
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody SysUserEntity sysUser){
-		userService.updateById(sysUser);
-
-        return R.ok();
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] userIds){
-		userService.removeByIds(Arrays.asList(userIds));
-
-        return R.ok();
-    }
-
 }

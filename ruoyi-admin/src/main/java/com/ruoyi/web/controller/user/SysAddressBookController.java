@@ -18,7 +18,7 @@ import java.util.Map;
  * @date 2024-06-07 10:57:43
  */
 @RestController
-@RequestMapping("/user/addressBook")
+@RequestMapping("/user/addressBook/1")
 public class SysAddressBookController {
     @Autowired
     SysAddressBookService sysAddressBookService;
@@ -50,7 +50,7 @@ public class SysAddressBookController {
      */
     @GetMapping("/{id}")
     public R info(@PathVariable("id") Long id){
-		SysAddressBookEntity sysAddressBook = sysAddressBookService.getById(id);
+		SysAddressBookEntity sysAddressBook = (SysAddressBookEntity) sysAddressBookService.getById(id);
 
         return R.ok().put("sysAddressBook", sysAddressBook);
     }
