@@ -54,6 +54,14 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- lombok依赖-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.4</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- 阿里数据库连接池 -->
             <dependency>
                 <groupId>com.alibaba</groupId>
