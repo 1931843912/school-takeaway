@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询菜品列表
 export function listDish(query) {
   return request({
-    url: '/merchant/dish/list',
+    url: '/admin/dish/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listDish(query) {
 // 查询菜品详细
 export function getDish(id) {
   return request({
-    url: '/merchant/dish/' + id,
+    url: '/admin/dish/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getDish(id) {
 // 新增菜品
 export function addDish(data) {
   return request({
-    url: '/merchant/dish',
+    url: '/admin/dish',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addDish(data) {
 // 修改菜品
 export function updateDish(data) {
   return request({
-    url: '/merchant/dish',
+    url: '/admin/dish',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateDish(data) {
 // 删除菜品
 export function delDish(id) {
   return request({
-    url: '/merchant/dish/' + id,
+    url: '/admin/dish/' + id,
     method: 'delete'
   })
 }
