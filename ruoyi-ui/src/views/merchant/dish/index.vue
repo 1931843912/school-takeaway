@@ -2,21 +2,12 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="菜品名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入菜品名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.name" placeholder="请输入菜品名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_normal_disable"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
+            :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -27,46 +18,20 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:dish:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['system:dish:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:dish:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['system:dish:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:dish:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['system:dish:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:dish:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['system:dish:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -75,7 +40,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="主键" align="center" prop="id" /> -->
       <el-table-column label="菜品名称" align="center" prop="name" />
-      <el-table-column label="菜品分类id" align="center" prop="categoryId" />
+      <el-table-column label="菜品分类名称" align="center" prop="categoryName" />
       <el-table-column label="菜品价格" align="center" prop="price">
         <template slot-scope="scope">
           <span>￥{{ (scope.row.price) }}</span>
@@ -83,13 +48,13 @@
       </el-table-column>
       <el-table-column label="图片" align="center" prop="image" width="100">
         <template slot-scope="scope">
-          <image-preview :src="scope.row.image" :width="50" :height="50"/>
+          <image-preview :src="scope.row.image" :width="50" :height="50" />
         </template>
       </el-table-column>
       <!-- <el-table-column label="描述信息" align="center" prop="description" /> -->
       <el-table-column label="状态" align="center" prop="status">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -106,31 +71,16 @@
       <el-table-column label="修改人" align="center" prop="updateUser" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:dish:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:dish:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:dish:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['system:dish:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改菜品对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -141,19 +91,29 @@
         <el-form-item label="菜品价格" prop="price">
           <el-input v-model="form.price" placeholder="请输入菜品价格" />
         </el-form-item>
+        <!-- 菜品分类 -->
+        <el-form-item label="套餐分类" prop="categoryId">
+          <!-- 使用下拉框形式 -->
+          <el-select v-model="form.categoryId" placeholder="请选择套餐分类">
+            <el-option v-for="dict in categoryList" :key="dict.id" :label="dict.name" :value="dict.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 菜品口味 -->
+        <el-form-item label="口味" prop="flavors">
+          <el-tree :data="data" node-key="id" default-expand-all :expand-on-click-node="false"
+            :render-content="renderContent">
+          </el-tree>
+        </el-form-item>
         <el-form-item label="图片" prop="image">
-          <image-upload v-model="form.image"/>
+          <image-upload v-model="form.image" />
         </el-form-item>
         <el-form-item label="描述信息">
-          <editor v-model="form.description" :min-height="192"/>
+          <editor v-model="form.description" :min-height="192" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in dict.type.sys_normal_disable"
-              :key="dict.value"
-              :label="parseInt(dict.value)"
-            >{{dict.label}}</el-radio>
+            <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="parseInt(dict.value)">{{
+              dict.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -164,14 +124,62 @@
     </el-dialog>
   </div>
 </template>
+<style scoped>
+.el-tag+.el-tag {
+  margin-left: 10px;
+}
 
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+</style>
 <script>
 import { listDish, getDish, delDish, addDish, updateDish } from "@/api/merchant/dish/index";
-
+import { listCategory } from '@/api/merchant/category/index'
+let id = 1000;
 export default {
   name: "Dish",
   dicts: ['sys_normal_disable'],
   data() {
+    const data = [{
+      id: 1,
+      label: '辣度',
+      children: [{
+        id: 4,
+        label: '不辣',
+      }]
+    }, {
+      id: 2,
+      label: '温度',
+      children: []
+    }, {
+      id: 3,
+      label: '忌口',
+      children: []
+    }, {
+      id: 5,
+      label: '甜味',
+      children: []
+    }];
     return {
       // 遮罩层
       loading: true,
@@ -198,27 +206,38 @@ export default {
         name: null,
         status: null,
       },
+      //分类列表
+      categoryList: [],
+      // dynamicTags: ['标签一', '标签二', '标签三'],
+      dynamicTags: [],
+      inputVisible: false,
+      inputValue: '',
+      data: JSON.parse(JSON.stringify(data)),
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        name: [
-          { required: true, message: "菜品名称不能为空", trigger: "blur" }
-        ],
-        price: [
-          { required: true, message: "菜品价格不能为空", trigger: "blur" }
-        ],
-        image: [
-          { required: true, message: "图片不能为空", trigger: "blur" }
-        ],
-        status: [
-          { required: true, message: "状态不能为空", trigger: "blur" }
-        ]
+        // name: [
+        //   { required: true, message: "菜品名称不能为空", trigger: "blur" }
+        // ],
+        // price: [
+        //   { required: true, message: "菜品价格不能为空", trigger: "blur" }
+        // ],
+        // image: [
+        //   { required: true, message: "图片不能为空", trigger: "blur" }
+        // ],
+        // status: [
+        //   { required: true, message: "状态不能为空", trigger: "blur" }
+        // ],
+        // categoryId: [
+        //   { required: true, message: "分类不能为空", trigger: "blur" }
+        // ]
       }
     };
   },
   created() {
     this.getList();
+    this.getCategoryList();
   },
   methods: {
     /** 查询菜品列表 */
@@ -229,6 +248,76 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    // 查询分类列表
+    getCategoryList() {
+      this.loading = true;
+      listCategory(this.queryParams).then(response => {
+        this.categoryList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
+    handleClose(tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+    },
+    showInput() { 
+      this.inputVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+    handleInputConfirm() {
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        this.dynamicTags.push(inputValue);
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
+    },
+    append(data) {
+      //弹出输入框填写内容
+      this.$prompt('请输入口味', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /[\w\u4e00-\u9fa5\-]{1,10}/,
+        inputErrorMessage: '口味不合法'
+      }).then(({ value }) => {
+        //将输入框的值添加到数组中
+        data.children.push({ id: id++, label: value });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
+    },
+    remove(node, data) {
+      const parent = node.parent;
+      const children = parent.data.children || parent.data;
+      const index = children.findIndex(d => d.id === data.id);
+      children.splice(index, 1);
+    },
+    renderContent(h, { node, data, store }) {
+      // 只有父亲节点展示添加按钮 子节点只有删除功能
+      if (data.children) {
+        return (
+          <span class="custom-tree-node">
+            <span>{node.label}</span>
+            <span>
+              <el-button size="mini" type="text" on-click={() => this.append(data)}> 添加</el-button>
+              <el-button size="mini" type="text" on-click={() => this.remove(node, data)}> 删除</el-button>
+            </span>
+          </span>);
+      }else{
+        return (
+          <span class="custom-tree-node">
+            <span>{node.label}</span>
+            <span>
+              <el-button size="mini" type="text" on-click={() => this.remove(node, data)}> 删除</el-button>
+            </span>
+          </span>);
+      }
     },
     // 取消按钮
     cancel() {
@@ -249,7 +338,8 @@ export default {
         createTime: null,
         updateTime: null,
         createUser: null,
-        updateUser: null
+        updateUser: null,
+        flavors: {}
       };
       this.resetForm("form");
     },
@@ -266,7 +356,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -287,6 +377,21 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
+      this.data.forEach(element => {
+        // 把elment整理为KeyValue结构 如果value为空则不添加
+        if(element.children.length != 0){
+          var values = "["
+          // this.form.flavors[element.label] = '['
+          element.children.forEach(child => {
+            // 使用双引号括起来
+            values += `"${child.label}",`
+          });
+          //去除末尾, 拼接上]
+          values = values.substring(0,values.length-1) + ']'  
+          //添加到flavors中
+          this.form.flavors[element.label] = values
+        }
+      });
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
@@ -308,12 +413,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除菜品编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除菜品编号为"' + ids + '"的数据项？').then(function () {
         return delDish(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {

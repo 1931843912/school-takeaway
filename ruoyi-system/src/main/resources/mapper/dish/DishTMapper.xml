@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dish.mapper.DishTMapper">
+
+    <resultMap type="com.ruoyi.dish.domin.vo.DishVo" id="DishResult">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="price" column="price"/>
+        <result property="image" column="image"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <sql id="selectDishVo">
+        select d.id, d.user_id,d.name, d.category_id, d.price, d.image, d.description, d.status, d.create_time, d.update_time, d.create_user, d.update_user
+        ,c.name as category_name
+        from sys_dish as d join sys_category as c on d.category_id = c.id
+    </sql>
+
+    <select id="selectDishList" parameterType="com.ruoyi.dish.domin.vo.DishVo" resultMap="DishResult">
+        <include refid="selectDishVo"/>
+        <where>
+            <if test="name != null  and name != ''">and d.name like concat('%', #{name}, '%')</if>
+            <if test="status != null ">and d.status = #{status}</if>
+            <if test="userId != null ">and d.user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <insert id="insertDish" parameterType="com.ruoyi.dish.domin.dto.DishDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dish
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="price != null">price,</if>
+            <if test="image != null">image,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            create_time,create_user,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="price != null">#{price},</if>
+            <if test="image != null">#{image},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            now(),#{userId},
+        </trim>
+    </insert>
+
+    <insert id="insertDishFlavors" parameterType="com.ruoyi.dish.domin.entity.DFlavorEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dish_flavor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="dishId != null">dish_id,</if>
+            <if test="name != null">name,</if>
+            <if test="value != null">value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="dishId != null">#{dishId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="value != null">#{value},</if>
+        </trim>
+    </insert>
+</mapper>

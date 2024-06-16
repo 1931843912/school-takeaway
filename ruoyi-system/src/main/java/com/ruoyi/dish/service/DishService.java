@@ -1,10 +1,12 @@
 package com.ruoyi.dish.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ruoyi.common.core.result.PageResult;
 import com.ruoyi.dish.domin.DishEntity;
 import com.ruoyi.dish.domin.dto.DishDTO;
 import com.ruoyi.dish.domin.dto.DishPageQueryDTO;
+import com.ruoyi.dish.domin.entity.Dish;
 import com.ruoyi.dish.domin.vo.DishVo;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public interface DishService extends IService<DishService>{
      * @param dishDTO 菜品及其口味
      * @return 结果
      */
-    public void insertSysDishWithFlavor(DishDTO dishDTO);
+    public void insertSysDishWithFlavor(DishDTO dishDTO) throws JsonProcessingException;
 
     /**
      * 修改菜品
@@ -51,6 +53,13 @@ public interface DishService extends IService<DishService>{
     PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
 
+    /**
+     * 查询菜品列表
+     *
+     * @param dish 菜品
+     * @return 菜品集合
+     */
+    public List<DishVo> selectDishList(DishVo dish);
 
     /**
      * 根据菜品id获得菜品及其口味
