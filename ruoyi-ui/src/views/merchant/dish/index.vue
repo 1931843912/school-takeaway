@@ -38,7 +38,7 @@
 
     <el-table v-loading="loading" :data="dishList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="主键" align="center" prop="id" /> -->
+      <el-table-column label="主键" align="center" prop="id" />
       <el-table-column label="菜品名称" align="center" prop="name" />
       <el-table-column label="菜品分类名称" align="center" prop="categoryName" />
       <el-table-column label="菜品价格" align="center" prop="price">
@@ -98,7 +98,10 @@
             <el-option v-for="dict in categoryList" :key="dict.id" :label="dict.name" :value="dict.id"></el-option>
           </el-select>
         </el-form-item>
-        <!-- 菜品口味 -->
+        <!-- 添加一个按钮用于添加父节点 -->
+        <el-form-item label="口味">
+          <el-button type="primary" size="small" @click="addParent">添加父节点</el-button>
+        </el-form-item>
         <el-form-item label="口味" prop="flavors">
           <el-tree :data="data" node-key="id" default-expand-all :expand-on-click-node="false"
             :render-content="renderContent">
@@ -160,26 +163,6 @@ export default {
   name: "Dish",
   dicts: ['sys_normal_disable'],
   data() {
-    const data = [{
-      id: 1,
-      label: '辣度',
-      children: [{
-        id: 4,
-        label: '不辣',
-      }]
-    }, {
-      id: 2,
-      label: '温度',
-      children: []
-    }, {
-      id: 3,
-      label: '忌口',
-      children: []
-    }, {
-      id: 5,
-      label: '甜味',
-      children: []
-    }];
     return {
       // 遮罩层
       loading: true,
@@ -212,7 +195,24 @@ export default {
       dynamicTags: [],
       inputVisible: false,
       inputValue: '',
-      data: JSON.parse(JSON.stringify(data)),
+      addFlavors: [{
+        id: 1,
+        label: '辣度',
+        children: []
+      }, {
+        id: 2,
+        label: '温度',
+        children: []
+      }, {
+        id: 3,
+        label: '忌口',
+        children: []
+      }, {
+        id: 5,
+        label: '甜味',
+        children: []
+      }],
+      data: null,
       // 表单参数
       form: {},
       // 表单校验
@@ -261,7 +261,7 @@ export default {
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
     },
-    showInput() { 
+    showInput() {
       this.inputVisible = true;
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus();
@@ -275,22 +275,51 @@ export default {
       this.inputVisible = false;
       this.inputValue = '';
     },
-    append(data) {
-      //弹出输入框填写内容
-      this.$prompt('请输入口味', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern: /[\w\u4e00-\u9fa5\-]{1,10}/,
-        inputErrorMessage: '口味不合法'
-      }).then(({ value }) => {
-        //将输入框的值添加到数组中
-        data.children.push({ id: id++, label: value });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
+    getPromptValue() {
+      return new Promise((resolve, reject) => {
+        this.$prompt('请输入口味', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[\w\u4e00-\u9fa5\-]{1,10}/,
+          inputErrorMessage: '口味不合法'
+        }).then(({ value }) => {
+          resolve(value);
+        }).catch(() => {
+          reject('取消输入');
         });
       });
+    },
+    async append(data) {
+      try {
+        const newLabel = await this.getPromptValue();
+        if (newLabel) {
+          // 创建新的口味对象
+          const newFlavor = { id: id++, label: newLabel };
+          //添加数据
+          data.children.push(newFlavor);
+        }
+      } catch (error) {
+        this.$message({
+          type: 'info',
+          message: error
+        });
+      }
+    },
+    async addParent() {
+      try {
+        const newLabel = await this.getPromptValue();
+        if (newLabel) {
+          // 创建新的口味对象
+          const newFlavor = { id: id++, label: newLabel, children: [] };
+          //添加数据
+          this.data.push(newFlavor);
+        }
+      } catch (error) {
+        this.$message({
+          type: 'info',
+          message: error
+        });
+      }
     },
     remove(node, data) {
       const parent = node.parent;
@@ -309,7 +338,7 @@ export default {
               <el-button size="mini" type="text" on-click={() => this.remove(node, data)}> 删除</el-button>
             </span>
           </span>);
-      }else{
+      } else {
         return (
           <span class="custom-tree-node">
             <span>{node.label}</span>
@@ -364,6 +393,7 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加菜品";
+      this.data = this.addFlavors;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -371,15 +401,34 @@ export default {
       const id = row.id || this.ids
       getDish(id).then(response => {
         this.form = response.data;
+        this.form.flavors = {}
+        console.log(response.data.flavors)
+        // 把响应数据中的flavors整理为addFlavors的结构
+        // 转换为目标结构
+        try {
+          const flavorItem = response.data.flavors.forEach((item, index) => ({
+            id: item.id, // 生成唯一的 id，可以根据具体需求调整生成规则
+            label: item.name,
+            children: JSON.parse(item.value).map((value, idx) => ({
+              id: index * 10 + (idx + 1), // 生成子项的 id，可以根据具体需求调整生成规则
+              label: value
+            }))
+          }));
+          this.data = flavorItem
+        } catch (error) {
+          console.log(error);
+          this.data = this.addFlavors
+        }
         this.open = true;
         this.title = "修改菜品";
       });
+      // console.log(this.form.flavors)
     },
     /** 提交按钮 */
     submitForm() {
       this.data.forEach(element => {
         // 把elment整理为KeyValue结构 如果value为空则不添加
-        if(element.children.length != 0){
+        if (element.children.length != 0) {
           var values = "["
           // this.form.flavors[element.label] = '['
           element.children.forEach(child => {
@@ -387,11 +436,13 @@ export default {
             values += `"${child.label}",`
           });
           //去除末尾, 拼接上]
-          values = values.substring(0,values.length-1) + ']'  
+          values = values.substring(0, values.length - 1) + ']'
           //添加到flavors中
-          this.form.flavors[element.label] = values
+          // console.log(values)
+          this.form.flavors[element.label] = values;
         }
       });
+      console.log(this.form.flavors)
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {

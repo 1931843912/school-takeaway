@@ -16,7 +16,9 @@ import com.ruoyi.dish.domin.vo.DishVo;
 import com.ruoyi.dish.service.DishService;
 
 import io.swagger.annotations.ApiOperation;
+import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,24 +48,24 @@ public class DishController extends BaseController {
     }
 
 
-    @PostMapping("/status/{status}")// 使用POST方法，并接收路径参数status
-    @Log(title = "更新菜品出售状态", businessType = BusinessType.UPDATE)
-    @ApiOperation("更新菜品出售状态")
-    public Result changeStatusById(@PathVariable("status") Integer status,//使用@PathVariable获取路径参数
-                                   @RequestParam("id") Long id) {
-        //使用@RequestParam获取查询参数
-        logger.info("更新菜品出售状态，ID:},状态：{}", id, status);
-        dishService.changeStatusById(id, status);//假设服务层方法接受id和status作为参数
-        return Result.success();
-    }
+    // @PostMapping("/status/{status}")// 使用POST方法，并接收路径参数status
+    // @Log(title = "更新菜品出售状态", businessType = BusinessType.UPDATE)
+    // @ApiOperation("更新菜品出售状态")
+    // public Result changeStatusById(@PathVariable("status") Integer status,//使用@PathVariable获取路径参数
+    //                                @RequestParam("id") Long id) {
+    //     //使用@RequestParam获取查询参数
+    //     logger.info("更新菜品出售状态，ID:},状态：{}", id, status);
+    //     dishService.changeStatusById(id, status);//假设服务层方法接受id和status作为参数
+    //     return Result.success();
+    // }
 
-    @GetMapping("/page")
-    @ApiOperation("菜品分页查询")
-    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
-        logger.info("菜品分页查询", dishPageQueryDTO);
-        PageResult result = dishService.pageQuery(dishPageQueryDTO);
-        return Result.success(result);
-    }
+    // @GetMapping("/page")
+    // @ApiOperation("菜品分页查询")
+    // public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
+    //     logger.info("菜品分页查询", dishPageQueryDTO);
+    //     PageResult result = dishService.pageQuery(dishPageQueryDTO);
+    //     return Result.success(result);
+    // }
 
     /**
      * 查询菜品列表
@@ -77,12 +79,21 @@ public class DishController extends BaseController {
     }
 
 
-    @GetMapping("/{id}")
-    @ApiOperation("根据菜品id获得菜品及其口味")
-    public Result<DishVo> getDishWithFlavorById(@PathVariable Long id) {
-        logger.info("根据菜品id获得菜品及其口味:", id);
-        DishVo dishVo = dishService.getDishWithFlavorById(id);
-        return Result.success(dishVo);
+    // @GetMapping("/{id}")
+    // @ApiOperation("根据菜品id获得菜品及其口味")
+    // public Result<DishVo> getDishWithFlavorById(@PathVariable Long id) {
+    //     logger.info("根据菜品id获得菜品及其口味:", id);
+    //     DishVo dishVo = dishService.getDishWithFlavorById(id);
+    //     return Result.success(dishVo);
+    // }
+
+    /**
+     * 获取菜品详细信息
+     */
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(dishService.selectDishById(id));
     }
 
     // @GetMapping("/list/{id}")   //假设id是URL路径的分
@@ -95,25 +106,23 @@ public class DishController extends BaseController {
     //     return Result.success(dishes);
     // }
 
-    @PutMapping("/")
-    @Log(title = "修改菜品及口味", businessType = BusinessType.UPDATE)
+    @PutMapping
+    @Log(title = "修改菜品及口味")
     @ApiOperation("修改菜品")
-    public Result updateDishWithFlavor(@RequestBody DishDTO dishDTO) {
+    public AjaxResult updateDishWithFlavor(@RequestBody DishDTO dishDTO) {
         logger.info("修改菜品", dishDTO);
         dishService.updateDishWithFlavor(dishDTO);
-        return Result.success();
+        return AjaxResult.success();
     }
 
     /**
-     * 菜品批量刷除
-     *  @param ids
+     * 删除菜品
      */
-    @DeleteMapping
-    @ApiOperation("菜品批量则除")
-    public Result delete(@RequestParam List<Long> ids)
+    @PreAuthorize("@ss.hasPermi('system:dish:remove')")
+    @Log(title = "菜品", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
     {
-        logger.info("菜品批量删除：", ids);
-        dishService.deleteBatch(ids);
-        return Result.success();
+        return toAjax(dishService.deleteDishByIds(ids));
     }
 }

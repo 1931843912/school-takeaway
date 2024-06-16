@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.dish.domin.DishEntity;
 import com.ruoyi.dish.domin.DishFlavorEntity;
 import com.ruoyi.dish.domin.dto.DishDTO;
+import com.ruoyi.dish.domin.dto.DishEditDTO;
 import com.ruoyi.dish.domin.dto.DishPageQueryDTO;
 import com.ruoyi.dish.domin.entity.DFlavorEntity;
 import com.ruoyi.dish.domin.vo.DishVo;
@@ -25,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Function;
 
@@ -41,6 +43,31 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private DishTMapper dishTMapper;
 
+    // 插入菜品口味表
+    public void insertDishFlavors(Map<String, String> flavors, Long userId, Long dishId) {
+        for (Map.Entry<String, String> entry : flavors.entrySet()) {
+            DFlavorEntity dFlavorEntity = new DFlavorEntity();
+            dFlavorEntity.setUserId(userId);
+            dFlavorEntity.setDishId(dishId);
+            dFlavorEntity.setName(entry.getKey()); //口味
+            dFlavorEntity.setValue(entry.getValue()); //取值
+            dishTMapper.insertDishFlavors(dFlavorEntity);
+        }
+    }
+
+    /**
+     * 查询菜品
+     *
+     * @param id 菜品主键
+     * @return 菜品
+     */
+    @Override
+    public DishEditDTO selectDishById(Long id) {
+        DishEditDTO dishEditDTO = dishTMapper.selectDishById(id);
+        System.out.println(dishEditDTO);
+        return dishTMapper.selectDishById(id);
+    }
+
     @Override
     public void insertSysDishWithFlavor(DishDTO dishDTO) {
         //创建人
@@ -50,30 +77,65 @@ public class DishServiceImpl implements DishService {
         //菜品插入后自动填充生成主键=>id(mybatis功能)
         dishTMapper.insertDish(dishDTO);
         //插入菜品口味表
-        Map<String, String> flavors = dishDTO.getFlavors();
-        for (Map.Entry<String, String> entry : flavors.entrySet()) {
-            DFlavorEntity dFlavorEntity = new DFlavorEntity();
-            dFlavorEntity.setUserId(userId);
-            dFlavorEntity.setDishId(dishDTO.getId());
-            dFlavorEntity.setName(entry.getKey()); //口味
-            dFlavorEntity.setValue(entry.getValue()); //取值
-            dishTMapper.insertDishFlavors(dFlavorEntity);
-        }
+        insertDishFlavors(dishDTO.getFlavors(), userId, dishDTO.getId());
     }
 
     @Override
-    public int updateSysDish(DishEntity Dish) {
-        return 0;
+    public void updateDishWithFlavor(DishDTO dishDTO) {
+        //核对是否本人操作....
+        //查询菜品是否存在....
+        //菜品更新
+        dishTMapper.updateDish(dishDTO);
+
+        //菜品口味表更新 先查后跟更新 / 先删后更新(简易做法)
+        //先删
+        dishTMapper.deleteDishFlavorsByIds(new Long[]{dishDTO.getUserId()});
+        //后更新
+        insertDishFlavors(dishDTO.getFlavors(), SecurityUtils.getUserId(), dishDTO.getId());
+
+        //
+        //
+        // DishEntity dish = new DishEntity();
+        //
+        // BeanUtils.copyProperties(dishDTO, dish);
+        //
+        // dishDao.updateById(dish);
+        //
+        // dishFlavorDao.deleteById(dish);
+        // List<DishFlavorEntity> flavors = dishDTO.getFlavors();
+        // if (flavors != null && flavors.size() > 0) {
+        //     flavors.forEach(dishFlavor -> {
+        //         dishFlavor.setDishId(dishDTO.getId());
+        //     });
+        //     dishFlavorDao.insertBatch(flavors);
+        // }
     }
 
+
+    /**
+     * 批量删除菜品
+     *
+     * @param ids 需要删除的菜品主键
+     * @return 结果
+     */
     @Override
-    public int deleteSysDishById(Long id) {
-        return 0;
+    public int deleteDishByIds(Long[] ids) {
+        //先删除菜品表
+        int dish = dishTMapper.deleteDishByIds(ids);
+        //后删除风味表
+        int flavors = dishTMapper.deleteDishFlavorsByIds(ids);
+        return dish + flavors;
     }
 
+    /**
+     * 删除菜品信息
+     *
+     * @param id 菜品主键
+     * @return 结果
+     */
     @Override
-    public int deleteSysDishByIds(Long[] ids) {
-        return 0;
+    public int deleteDishById(Long id) {
+        return dishTMapper.deleteDishById(id);
     }
 
     @Override
@@ -115,7 +177,7 @@ public class DishServiceImpl implements DishService {
         }
 
         for (Long id : ids) {
-            dishDao.deleteById(id);
+            dishTMapper.deleteDishById(id);
             dishFlavorDao.deleteByDishId(id);
         }
     }
@@ -128,70 +190,5 @@ public class DishServiceImpl implements DishService {
     @Override
     public void changeStatusById(Long id, Integer status) {
         dishDao.changeStatusById(id, status);
-    }
-
-    @Override
-    public void updateDishWithFlavor(DishDTO dishDTO) {
-        DishEntity dish = new DishEntity();
-
-        BeanUtils.copyProperties(dishDTO, dish);
-
-        dishDao.updateById(dish);
-
-        dishFlavorDao.deleteById(dish);
-
-
-        // List<DishFlavorEntity> flavors = dishDTO.getFlavors();
-        // if (flavors != null && flavors.size() > 0) {
-        //     flavors.forEach(dishFlavor -> {
-        //         dishFlavor.setDishId(dishDTO.getId());
-        //     });
-        //     dishFlavorDao.insertBatch(flavors);
-        // }
-    }
-
-    @Override
-    public boolean saveBatch(Collection<DishService> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<DishService> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<DishService> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(DishService entity) {
-        return false;
-    }
-
-    @Override
-    public DishService getOne(Wrapper<DishService> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<DishService> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<DishService> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<DishService> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public Class<DishService> getEntityClass() {
-        return null;
     }
 }
