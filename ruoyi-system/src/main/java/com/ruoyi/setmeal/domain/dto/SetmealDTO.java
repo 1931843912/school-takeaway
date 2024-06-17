@@ -1,14 +1,12 @@
-package com.ruoyi.setmeal.domain.entity;
+package com.ruoyi.setmeal.domain.dto;
 
-import java.math.BigDecimal;
-
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.math.BigDecimal;
 
 /**
  * 套餐对象 sys_setmeal
@@ -19,7 +17,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Setmeal extends BaseEntity {
+public class SetmealDTO extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -79,4 +77,6 @@ public class Setmeal extends BaseEntity {
      */
     @Excel(name = "修改人")
     private Long updateUser;
+
+    private Long[] dishItems;
 }

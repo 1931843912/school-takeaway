@@ -1,6 +1,8 @@
-package com.ruoyi.system.service;
+package com.ruoyi.setmeal.service;
 
+import com.ruoyi.setmeal.domain.dto.SetmealDTO;
 import com.ruoyi.setmeal.domain.entity.Setmeal;
+
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ public interface ISetmealService {
      * @param id 套餐主键
      * @return 套餐
      */
-    public Setmeal selectSetmealById(Long id);
+    public SetmealDTO selectSetmealById(Long id);
 
     /**
      * 查询套餐列表
@@ -28,11 +30,8 @@ public interface ISetmealService {
 
     /**
      * 新增套餐
-     *
-     * @param setmeal 套餐
-     * @return 结果
      */
-    public int insertSetmeal(Setmeal setmeal);
+    public int insertSetmeal(SetmealDTO setmeal);
 
     /**
      * 修改套餐
@@ -40,7 +39,7 @@ public interface ISetmealService {
      * @param setmeal 套餐
      * @return 结果
      */
-    public int updateSetmeal(Setmeal setmeal);
+    public int updateSetmeal(SetmealDTO setmeal);
 
     /**
      * 批量删除套餐

@@ -1,6 +1,9 @@
 package com.ruoyi.setmeal.mapper;
 
+import com.ruoyi.setmeal.domain.dto.SetmealDTO;
 import com.ruoyi.setmeal.domain.entity.Setmeal;
+import com.ruoyi.setmeal.domain.entity.SetmealDish;
+
 import java.util.List;
 
 /**
@@ -16,7 +19,10 @@ public interface SetmealMapper {
      * @param id 套餐主键
      * @return 套餐
      */
-    public Setmeal selectSetmealById(Long id);
+    public SetmealDTO selectSetmealById(Long id);
+
+    //查询套餐该关联的菜品
+    public List<Long> selectSetmealDishById(Long id);
 
     /**
      * 查询套餐列表
@@ -28,11 +34,16 @@ public interface SetmealMapper {
 
     /**
      * 新增套餐
+     */
+    public int insertSetmeal(SetmealDTO setmealDTO);
+
+    /**
+     * 新增套餐菜品关系
      *
-     * @param setmeal 套餐
+     * @param setmealDish 套餐菜品关系
      * @return 结果
      */
-    public int insertSetmeal(Setmeal setmeal);
+    public int insertSetmealDish(SetmealDish setmealDish);
 
     /**
      * 修改套餐
@@ -40,7 +51,7 @@ public interface SetmealMapper {
      * @param setmeal 套餐
      * @return 结果
      */
-    public int updateSetmeal(Setmeal setmeal);
+    public int updateSetmeal(SetmealDTO setmeal);
 
     /**
      * 删除套餐
@@ -59,6 +70,9 @@ public interface SetmealMapper {
     public int deleteSetmealByIds(Long[] ids);
 
     List<Setmeal> selectDishList(Long userId);
+
+    //批量删除套餐关联菜品
+    void deleteSetmealDishs(Long id);
 
     // int changeSetmealStatus(Setmeal setmeal);
 }

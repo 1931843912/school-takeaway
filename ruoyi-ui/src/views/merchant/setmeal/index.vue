@@ -98,9 +98,9 @@
           </el-select>
         </el-form-item>
         <!-- 多选框选中数据 -->
-          <el-form-item label="套餐项目" prop="dishItems">
+        <el-form-item label="套餐项目" prop="dishItems">
           <el-select v-model="form.dishItems" multiple placeholder="请选择套餐项目">
-            <el-option v-for="dict in dishList" :key="dict.id" :label="dict.name" :value="dict.id"></el-option>
+            <el-option v-for="dict in dishList" :key="dict.id" :checked="dict.checked" :label="dict.name" :value="dict.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="套餐名称" prop="name">
@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal,ListDish } from "@/api/merchant/setmeal/index";
+import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal, ListDish } from "@/api/merchant/setmeal/index";
 import { listCategory } from '@/api/merchant/category/index'
 export default {
   name: "Setmeal",
@@ -217,9 +217,10 @@ export default {
       });
     },
     // 查询菜品列表
-    getDishList(){
+    getDishList() {
       this.loading = true;
       ListDish(this.queryParams).then(response => {
+        response.rows[0]['checked'] = true
         this.dishList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -228,11 +229,11 @@ export default {
     // 套餐状态修改
     handleStatusChange(row) {
       let text = row.status === "0" ? "起售" : "停售";
-      this.$modal.confirm('确认要"' + text + '""' + row.name + '"套餐吗？').then(function() {
-        return changeSetmealStatus(row.id,row.status);
+      this.$modal.confirm('确认要"' + text + '""' + row.name + '"套餐吗？').then(function () {
+        return changeSetmealStatus(row.id, row.status);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
-      }).catch(function() {
+      }).catch(function () {
         row.status = row.status === "0" ? "1" : "0";
       });
     },
@@ -256,7 +257,7 @@ export default {
         updateTime: null,
         createUser: null,
         updateUser: null,
-        dishItems:null
+        dishItems: []
       };
       this.resetForm("form");
     },
@@ -290,6 +291,8 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改套餐";
+        // this.form.dishItems.push(46);
+        console.log(this.form.dishItems)
       });
     },
     /** 提交按钮 */

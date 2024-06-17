@@ -3,7 +3,9 @@ package com.ruoyi.web.controller.setmeal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.setmeal.domain.dto.SetmealDTO;
 import com.ruoyi.setmeal.domain.entity.Setmeal;
+import com.ruoyi.setmeal.service.ISetmealService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,6 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.system.service.ISetmealService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
@@ -83,7 +84,7 @@ public class SetmealController extends BaseController {
     @PreAuthorize("@ss.hasPermi('merchant:setmeal:add')")
     @Log(title = "套餐", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Setmeal setmeal) {
+    public AjaxResult add(@RequestBody SetmealDTO setmeal) {
         return toAjax(setmealService.insertSetmeal(setmeal));
     }
 
@@ -93,7 +94,7 @@ public class SetmealController extends BaseController {
     @PreAuthorize("@ss.hasPermi('merchant:setmeal:edit')")
     @Log(title = "套餐", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Setmeal setmeal) {
+    public AjaxResult edit(@RequestBody SetmealDTO setmeal) {
         return toAjax(setmealService.updateSetmeal(setmeal));
     }
 
