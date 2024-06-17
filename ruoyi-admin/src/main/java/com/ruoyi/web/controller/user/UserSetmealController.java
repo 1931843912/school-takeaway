@@ -2,21 +2,22 @@ package com.ruoyi.web.controller.user;
 
 
 import com.ruoyi.user.entity.constant.StatusConstant;
+import com.ruoyi.user.entity.po.Dish;
 import com.ruoyi.user.entity.po.Setmeal;
 import com.ruoyi.user.entity.vo.DishItemVO;
+import com.ruoyi.user.entity.vo.SetmealVO;
 import com.ruoyi.user.result.Result;
 import com.ruoyi.user.service.UserSetmealService;
+import com.ruoyi.web.entity_user.SysSetmealEntity;
 import com.ruoyi.web.service_user.SysSetmealService;
-import com.ruoyi.web.utils_user.PageUtils;
-import com.ruoyi.web.utils_user.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @RestController("userSetmealController")
 @RequestMapping("/user/setmeal")
@@ -24,7 +25,8 @@ import java.util.Map;
 public class UserSetmealController {
     @Autowired
     private UserSetmealService userSetmealService;
-
+    @Resource
+    private RedisTemplate redisTemplate;
 //    /**
 //     * 条件查询
 //     *
@@ -46,14 +48,32 @@ public class UserSetmealController {
     @Autowired
     private SysSetmealService sysSetmealService;
 
+    // public R list(@RequestParam Map<String, Object> params){
+    //     PageUtils page = sysSetmealService.queryPage(params);
+    //     return R.ok().put("data", page);
+    // }
+
     /**
      * 列表
      */
     @GetMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = sysSetmealService.queryPage(params);
+    public Result<List<SetmealVO>> list(Long categoryId){
+        //构造redis中的key，规则：setmeal_分类id
+        String key = "setmeal_" + categoryId;
+        //查询redis中是否存在菜品数据
+        List<SetmealVO> list = (List<SetmealVO>) redisTemplate.opsForValue().get(key);
+        if(list != null && list.size() > 0){
+            //如果存在，直接返回，无须查询数据库
+            return Result.success(list);
+        }
+        Setmeal setmeal = new Setmeal();
+        setmeal.setCategoryId(categoryId);
+        setmeal.setStatus(StatusConstant.ENABLE);//查询起售中的菜品
+        //如果不存在，查询数据库，将查询到的数据放入redis中
+        list = userSetmealService.listSetmeals(setmeal);
+        redisTemplate.opsForValue().set(key, list);
 
-        return R.ok().put("data", page);
+        return  Result.success(list);
     }
     /**
      * 根据套餐id查询包含的菜品列表

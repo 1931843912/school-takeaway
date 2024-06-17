@@ -12,6 +12,9 @@
             <if test="type != null">
                 and type = #{type}
             </if>
+<!--            <if test="userId != null">-->
+<!--                and user_id = #{userId}-->
+<!--            </if>-->
         </where>
         order by sort asc , create_time desc
     </select>
@@ -43,9 +46,12 @@
 
     <select id="list" resultType="Category">
         select * from sys_category
-        where status = 1
+        where status = 0
         <if test="type != null">
             and type = #{type}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId}
         </if>
         order by sort asc,create_time desc
     </select>

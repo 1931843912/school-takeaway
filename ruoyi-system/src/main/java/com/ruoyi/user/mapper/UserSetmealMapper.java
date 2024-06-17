@@ -95,4 +95,7 @@ public interface UserSetmealMapper {
      * @return
      */
     Integer countByMap(Map map);
+
+    @Select("select * from sys_setmeal where category_id=#{categoryId}")
+    List<SetmealVO> listSetmeals(Setmeal setmeal);
 }

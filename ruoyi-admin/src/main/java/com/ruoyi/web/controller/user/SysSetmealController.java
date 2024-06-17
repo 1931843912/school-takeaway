@@ -30,7 +30,6 @@ public class SysSetmealController {
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = sysSetmealService.queryPage(params);
-
         return R.ok().put("data", page);
     }
 

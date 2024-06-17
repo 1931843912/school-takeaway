@@ -187,4 +187,10 @@ public class UserSetmealServiceImpl implements UserSetmealService {
     public List<DishItemVO> getDishItemById(Long id) {
         return userSetmealMapper.getDishItemBySetmealId(id);
     }
+
+    @Override
+    public List<SetmealVO> listSetmeals(Setmeal setmeal) {
+        List<SetmealVO> list = userSetmealMapper.listSetmeals(setmeal);
+        return list;
+    }
 }

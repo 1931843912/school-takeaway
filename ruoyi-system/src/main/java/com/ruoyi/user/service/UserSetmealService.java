@@ -70,4 +70,6 @@ public interface UserSetmealService {
      * @return
      */
     List<DishItemVO> getDishItemById(Long id);
+
+    List<SetmealVO> listSetmeals(Setmeal setmeal);
 }

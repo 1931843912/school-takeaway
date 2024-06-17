@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserCategoryMapper {
@@ -51,5 +52,5 @@ public interface UserCategoryMapper {
      * @param type
      * @return
      */
-    List<Category> list(Integer type);
+    List<Category> list(Map<String,Integer> type);
 }

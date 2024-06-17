@@ -19,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 分类业务层
@@ -126,7 +128,10 @@ public class UserCategoryServiceImpl implements UserCategoryService {
      * @param type
      * @return
      */
-    public List<Category> list(Integer type) {
-        return userCategoryMapper.list(type);
+    public List<Category> list(Integer type,Integer userId) {
+        Map<String,Integer> map = new HashMap<>();
+        map.put("type", type);
+        map.put("userId", userId);
+        return userCategoryMapper.list(map);
     }
 }

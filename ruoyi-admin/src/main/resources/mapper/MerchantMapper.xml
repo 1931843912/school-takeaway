@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.web.mapper.MerchantMapper">
+
+    <resultMap id="MerchantVo" type="com.ruoyi.web.entity_user.MerchantEntity">
+        <result property="id" column="dept_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="storeName" column="dept_name"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="selectMerchantList" resultMap="MerchantVo">
+		SELECT
+			sys_dept.dept_id,
+			dept_name,
+			su.user_id,
+			sys_dept.status
+		FROM
+			sys_dept
+			JOIN sys_user su ON sys_dept.leader = su.nick_name
+		WHERE
+			parent_id = 100
+    </select>
+
+	<select id="selectMerchantDishList" parameterType="Long" resultType="String">
+		SELECT name from sys_dish WHERE user_id =#{userId} LIMIT 3
+    </select>
+</mapper>

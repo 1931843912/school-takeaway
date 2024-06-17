@@ -28,8 +28,8 @@ public class UserCategoryController {
      */
     @GetMapping("/list")
     @ApiOperation("查询分类")
-    public Result<List<Category>> list(Integer type) {
-        List<Category> list = userCategoryService.list(type);
+    public Result<List<Category>> list(Integer type,Integer userId) {
+        List<Category> list = userCategoryService.list(type,userId);
         return Result.success(list);
     }
 }
