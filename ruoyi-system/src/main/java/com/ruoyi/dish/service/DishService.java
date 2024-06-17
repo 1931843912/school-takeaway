@@ -7,6 +7,7 @@ import com.ruoyi.dish.domin.DishEntity;
 import com.ruoyi.dish.domin.dto.DishDTO;
 import com.ruoyi.dish.domin.dto.DishEditDTO;
 import com.ruoyi.dish.domin.dto.DishPageQueryDTO;
+import com.ruoyi.dish.domin.entity.DFlavorEntity;
 import com.ruoyi.dish.domin.entity.Dish;
 import com.ruoyi.dish.domin.vo.DishVo;
 
@@ -55,7 +56,7 @@ public interface DishService {
      * @param id 菜品id
      * @return菜品及其口味
      */
-    DishVo getDishWithFlavorById(Long id);
+    List<DFlavorEntity> getDishWithFlavorById(Long id);
 
     void deleteBatch(List<Long> ids);
 

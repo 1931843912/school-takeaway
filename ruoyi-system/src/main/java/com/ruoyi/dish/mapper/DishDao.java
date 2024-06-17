@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.ruoyi.dish.domin.DishEntity;
 import com.ruoyi.dish.domin.DishFlavorEntity;
 import com.ruoyi.dish.domin.dto.DishPageQueryDTO;
+import com.ruoyi.dish.domin.entity.DFlavorEntity;
 import com.ruoyi.dish.domin.vo.DishVo;
 import com.ruoyi.user.entity.po.Dish;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,7 +37,7 @@ public interface DishDao extends BaseMapper<DishEntity> {
      */
     List<DishEntity> selectDishList(DishEntity dish);
 
-    DishVo getDishWithFlavorById(Long id);
+    List<DFlavorEntity> getDishWithFlavorById(Long id);
     @Select("select * from sys_dish where.id = #{id}")
     DishEntity getDishById(Long id);
 

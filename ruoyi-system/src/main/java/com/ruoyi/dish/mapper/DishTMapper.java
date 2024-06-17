@@ -35,6 +35,8 @@ public interface DishTMapper {
     //增加菜品口味
     void insertDishFlavors(DFlavorEntity dFlavorEntity);
 
+    List<DFlavorEntity> getDishFlavorById(Long id);
+
     /**
      * 删除菜品
      *

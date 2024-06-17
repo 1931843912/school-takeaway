@@ -158,8 +158,8 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public DishVo getDishWithFlavorById(Long id) {
-        return dishDao.getDishWithFlavorById(id);
+    public List<DFlavorEntity> getDishWithFlavorById(Long id) {
+        return dishTMapper.getDishFlavorById(id);
     }
 
     @Override

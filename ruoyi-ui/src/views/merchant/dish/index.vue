@@ -158,6 +158,7 @@
 <script>
 import { listDish, getDish, delDish, addDish, updateDish } from "@/api/merchant/dish/index";
 import { listCategory } from '@/api/merchant/category/index'
+import { getDishFlavors } from "../../../api/merchant/dish";
 let id = 1000;
 export default {
   name: "Dish",
@@ -212,26 +213,26 @@ export default {
         label: '甜味',
         children: []
       }],
-      data: null,
+      data: [],
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        // name: [
-        //   { required: true, message: "菜品名称不能为空", trigger: "blur" }
-        // ],
-        // price: [
-        //   { required: true, message: "菜品价格不能为空", trigger: "blur" }
-        // ],
-        // image: [
-        //   { required: true, message: "图片不能为空", trigger: "blur" }
-        // ],
-        // status: [
-        //   { required: true, message: "状态不能为空", trigger: "blur" }
-        // ],
-        // categoryId: [
-        //   { required: true, message: "分类不能为空", trigger: "blur" }
-        // ]
+        name: [
+          { required: true, message: "菜品名称不能为空", trigger: "blur" }
+        ],
+        price: [
+          { required: true, message: "菜品价格不能为空", trigger: "blur" }
+        ],
+        image: [
+          { required: true, message: "图片不能为空", trigger: "blur" }
+        ],
+        status: [
+          { required: true, message: "状态不能为空", trigger: "blur" }
+        ],
+        categoryId: [
+          { required: true, message: "分类不能为空", trigger: "blur" }
+        ]
       }
     };
   },
@@ -402,26 +403,41 @@ export default {
       getDish(id).then(response => {
         this.form = response.data;
         this.form.flavors = {}
-        console.log(response.data.flavors)
-        // 把响应数据中的flavors整理为addFlavors的结构
-        // 转换为目标结构
-        try {
-          const flavorItem = response.data.flavors.forEach((item, index) => ({
-            id: item.id, // 生成唯一的 id，可以根据具体需求调整生成规则
-            label: item.name,
-            children: JSON.parse(item.value).map((value, idx) => ({
-              id: index * 10 + (idx + 1), // 生成子项的 id，可以根据具体需求调整生成规则
-              label: value
-            }))
-          }));
-          this.data = flavorItem
-        } catch (error) {
-          console.log(error);
-          this.data = this.addFlavors
-        }
         this.open = true;
         this.title = "修改菜品";
       });
+      getDishFlavors(id).then(responce => {
+        const rd = responce.data
+
+        this.data = []
+
+        rd.forEach(element => {
+          this.data.push({
+            id: element.id, // 生成唯一的 id，可以根据具体需求调整生成规则
+            label: element.name,
+            children: JSON.parse(element.value).map((value, idx) => ({
+              id: element.id * 10 + (idx + 1), // 生成子项的 id，可以根据具体需求调整生成规则
+              label: value
+            }))
+          })
+        })
+
+        // try {
+        //   const flavorItem = rd.forEach((item, index) => ({
+        //     id: item.id, // 生成唯一的 id，可以根据具体需求调整生成规则
+        //     label: item.name,
+        //     // children: JSON.parse(item.value).map((value, idx) => ({
+        //     //   id: index * 10 + (idx + 1), // 生成子项的 id，可以根据具体需求调整生成规则
+        //     //   label: value
+        //     // }))
+        //   }));
+        //   this.data = flavorItem
+        //   console.log(flavorItem)
+        // } catch (error) {
+        //   console.log(error);
+        //   this.data = this.addFlavors
+        // }
+      })
       // console.log(this.form.flavors)
     },
     /** 提交按钮 */

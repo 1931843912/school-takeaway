@@ -17,6 +17,14 @@ export function getDish(id) {
   })
 }
 
+// 获取菜品口味
+export function getDishFlavors(id) {
+  return request({
+    url: '/admin/dish/dishFlavors/' + id,
+    method: 'get'
+  })
+}
+
 // 新增菜品
 export function addDish(data) {
   return request({

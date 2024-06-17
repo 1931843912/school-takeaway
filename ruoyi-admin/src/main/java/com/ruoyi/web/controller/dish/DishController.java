@@ -79,13 +79,12 @@ public class DishController extends BaseController {
     }
 
 
-    // @GetMapping("/{id}")
-    // @ApiOperation("根据菜品id获得菜品及其口味")
-    // public Result<DishVo> getDishWithFlavorById(@PathVariable Long id) {
-    //     logger.info("根据菜品id获得菜品及其口味:", id);
-    //     DishVo dishVo = dishService.getDishWithFlavorById(id);
-    //     return Result.success(dishVo);
-    // }
+    @GetMapping("/dishFlavors/{id}")
+    @ApiOperation("根据菜品id获得菜品口味")
+    public AjaxResult getDishWithFlavorById(@PathVariable Long id) {
+        logger.info("根据菜品id获得菜品口味:", id);
+        return success(dishService.getDishWithFlavorById(id));
+    }
 
     /**
      * 获取菜品详细信息

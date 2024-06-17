@@ -110,6 +110,9 @@
         </trim>
     </insert>
 
+    <select id="getDishFlavorById" parameterType="Long" resultType="com.ruoyi.dish.domin.entity.DFlavorEntity">
+        select * from sys_dish_flavor where dish_id =#{id};
+    </select>
     <update id="updateDish" parameterType="com.ruoyi.dish.domin.dto.DishDTO">
         update sys_dish
         <trim prefix="SET" suffixOverrides=",">
