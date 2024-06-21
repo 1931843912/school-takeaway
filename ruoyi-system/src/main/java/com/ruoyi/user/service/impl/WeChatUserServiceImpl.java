@@ -2,6 +2,7 @@ package com.ruoyi.user.service.impl;
 
 
 import com.ruoyi.user.entity.constant.MessageConstant;
+import com.ruoyi.user.entity.context.BaseContext;
 import com.ruoyi.user.entity.dto.UserLoginDTO;
 import com.ruoyi.user.entity.exception.LoginFailedException;
 import com.ruoyi.user.entity.po.User;
@@ -38,7 +39,7 @@ public class WeChatUserServiceImpl implements WeChatUserService {
      */
     public User wxLogin(UserLoginDTO userLoginDTO) {
         String openid = getOpenid(userLoginDTO.getCode());
-
+        System.out.println(openid);
         //判断openid是否为空，如果为空表示登录失败，抛出业务异常
         if(openid == null){
             throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
@@ -55,6 +56,10 @@ public class WeChatUserServiceImpl implements WeChatUserService {
                     .build();
             weChatUserMapper.insert(user);
         }
+        Long userId = weChatUserMapper.getUser(openid);
+        //存入线程
+        BaseContext.setCurrentId(userId);
+        System.out.println(userId);
 
         //返回这个用户对象
         return user;

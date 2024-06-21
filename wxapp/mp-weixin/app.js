@@ -7,5 +7,6 @@ App({
     globalData: {
         userInfo: null, // 示例：定义一个 userInfo 的全局变量
         storeInfo: null, // 示例：定义一个 storeInfo 的全局变量
+        code:null //用户的openid
     }
 });

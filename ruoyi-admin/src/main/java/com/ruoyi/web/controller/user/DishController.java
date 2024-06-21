@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.user;
 
 
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.user.entity.constant.StatusConstant;
 import com.ruoyi.user.entity.po.Dish;
 import com.ruoyi.user.entity.vo.DishVO;
@@ -36,7 +37,7 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
     public Result<List<DishVO>> list(Long categoryId) {
-
+        // Long userId = SecurityUtils.getUserId();
         //构造redis中的key，规则：dish_分类id
         String key = "dish_" + categoryId;
 

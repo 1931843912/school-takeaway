@@ -33,11 +33,12 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
      * 添加购物车
      * @param shoppingCartDTO
      */
-    public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+    public int addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         //判断当前加入到购物车中的商品是否已经存在了
         ShoppingCart shoppingCart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
         Long userId = BaseContext.getCurrentId();
+        System.out.println(userId);
         shoppingCart.setUserId(userId);
 
         List<ShoppingCart> list = userShoppingCartMapper.list(shoppingCart);
@@ -66,9 +67,10 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
                 shoppingCart.setAmount(setmeal.getPrice());
             }
             shoppingCart.setNumber(1);
-            shoppingCart.setCreateTime(LocalDateTime.now());
+            // shoppingCart.setCreateTime(LocalDateTime.now());
             userShoppingCartMapper.insert(shoppingCart);
         }
+        return 1;
     }
 
     /**
@@ -98,7 +100,7 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
      * 删除购物车中一个商品
      * @param shoppingCartDTO
      */
-    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+    public int subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
         //设置查询条件，查询当前登录用户的购物车数据
@@ -119,5 +121,6 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
                 userShoppingCartMapper.updateNumberById(shoppingCart);
             }
         }
+        return 1;
     }
 }

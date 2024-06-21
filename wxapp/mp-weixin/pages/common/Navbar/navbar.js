@@ -149,7 +149,7 @@ var _default =
   methods: {
     myCenterFun: function myCenterFun() {
       uni.navigateTo({
-        url: '/pages/my/my' });
+        url: '/pages/merchant/index' });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

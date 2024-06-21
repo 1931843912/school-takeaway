@@ -4271,6 +4271,7 @@ var _index = __webpack_require__(/*! ../../utils/index.js */ 29);function _inter
           // provider: 'weixin',
           success: function success(loginRes) {
             if (loginRes.errMsg === 'login:ok') {
+            getApp().globalData.code = loginRes.code;
               resolve(loginRes.code);
             }
           } });
@@ -4298,6 +4299,8 @@ var _index = __webpack_require__(/*! ../../utils/index.js */ 29);function _inter
                   if (loginRes.errMsg === 'login:ok') {
                     console.log('-=-=-=-=loginRes-=-=-=', loginRes);
                     jsCode = loginRes.code;
+                    getApp().globalData.code = jsCode;
+                    // console.log(getApp().globalData.code)
                   }
                 } });
 
@@ -20040,10 +20043,7 @@ exports.clearOrder = clearOrder;var payOrder = function payOrder(params) {return
 
 // 用户登录
 exports.payOrder = payOrder;var userLogin = function userLogin(params) {
-    console.log("--------------");
-    params.userId = "111"
-    console.log(params);
-    console.log("--------------");
+    console.log(params)
   return (0, _request.request)({
     url: '/user/user/login',
     method: 'POST',
@@ -20061,7 +20061,6 @@ exports.userLogin = userLogin;var getCategoryList = function getCategoryList(par
     url: '/user/category/list?userId='+getApp().globalData.storeInfo.userId,
     method: 'GET',
     params: params });
-
 };
 
 // 查询菜品管理列表
@@ -20084,8 +20083,9 @@ exports.dishListByCategoryId = dishListByCategoryId;var commonDownload = functio
 
 // 购物车----加菜功能实现
 exports.commonDownload = commonDownload;var addShoppingCart = function addShoppingCart(params) {
+    console.log(params);
   return (0, _request.request)({
-    url: '/user/shoppingCart',
+    url: '/user/shoppingCart?openid='+getApp().globalData.code,
     method: 'POST',
     params: params });
 
@@ -20123,7 +20123,7 @@ exports.getShoppingCartList = getShoppingCartList;var editHoppingCart = function
 // 购物车新增接口-new
 exports.editHoppingCart = editHoppingCart;var newAddShoppingCartAdd = function newAddShoppingCartAdd(params) {
   return (0, _request.request)({
-    url: '/user/shoppingCart/add',
+    url: '/user/shoppingCart/add?openid='+getApp().globalData.code,
     method: 'POST',
     params: params });
 
@@ -20172,6 +20172,7 @@ exports.queryOrderUserPage = queryOrderUserPage;var submitOrderSubmit = function
 
 // 查询地址列表
 exports.submitOrderSubmit = submitOrderSubmit;var queryAddressBookList = function queryAddressBookList(params) {
+    params.code=getApp().globalData.code;
   return (0, _request.request)({
     url: '/user/addressBook/list',
     method: 'GET',
@@ -20191,6 +20192,7 @@ exports.queryAddressBookList = queryAddressBookList;var putAddressBookDefault = 
 
 // 新增地址接口
 exports.putAddressBookDefault = putAddressBookDefault;var addAddressBook = function addAddressBook(params) {
+    // console.log(getApp().globalData.code)
   return (0, _request.request)({
     url: '/user/addressBook',
     method: 'POST',

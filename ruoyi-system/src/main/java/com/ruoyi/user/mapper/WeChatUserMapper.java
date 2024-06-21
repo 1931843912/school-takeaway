@@ -32,4 +32,7 @@ public interface WeChatUserMapper {
      * @return
      */
     Integer countByMap(Map map);
+
+    @Select("select id from user where openid=#{openid}")
+    Long getUser(String openid);
 }
