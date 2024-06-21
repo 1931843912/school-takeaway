@@ -48,6 +48,18 @@ public class CategoryController extends BaseController {
         List<Category> list = categoryService.selectCategoryList(category);
         return getDataTable(list);
     }
+    /**
+     * 查询菜品分类列表
+     */
+    @PreAuthorize("@ss.hasPermi('merchant:category:list')")
+    @GetMapping("/list1")
+    public TableDataInfo listTypeOne() {
+        startPage();
+        Category category = new Category();
+        category.setType((long) 1);
+        List<Category> list = categoryService.selectCategoryList(category);
+        return getDataTable(list);
+    }
 
     /**
      * 导出菜品及套餐分类列表
