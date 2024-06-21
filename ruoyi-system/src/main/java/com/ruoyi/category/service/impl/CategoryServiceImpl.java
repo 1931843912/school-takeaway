@@ -57,6 +57,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public int insertCategory(Category category) {
         category.setCreateTime(DateUtils.getNowDate());
+        category.setUpdateTime(DateUtils.getNowDate());
+        category.setUserId(SecurityUtils.getUserId());
+        category.setCreateUser(SecurityUtils.getUserId());
+        category.setUpdateUser(SecurityUtils.getUserId());
         return categoryMapper.insertCategory(category);
     }
 

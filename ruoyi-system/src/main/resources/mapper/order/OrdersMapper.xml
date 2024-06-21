@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.order.mapper.OrdersMapper">
+
+    <resultMap type="com.ruoyi.order.domin.enity.Orders" id="SysOrdersResult">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+        <result property="status"    column="status"    />
+        <result property="userId"    column="user_id"    />
+        <result property="addressBookId"    column="address_book_id"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="checkoutTime"    column="checkout_time"    />
+        <result property="payMethod"    column="pay_method"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="amount"    column="amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="phone"    column="phone"    />
+        <result property="address"    column="address"    />
+        <result property="userName"    column="user_name"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="cancelReason"    column="cancel_reason"    />
+        <result property="rejectionReason"    column="rejection_reason"    />
+        <result property="cancelTime"    column="cancel_time"    />
+        <result property="estimatedDeliveryTime"    column="estimated_delivery_time"    />
+        <result property="deliveryStatus"    column="delivery_status"    />
+        <result property="deliveryTime"    column="delivery_time"    />
+        <result property="packAmount"    column="pack_amount"    />
+        <result property="tablewareNumber"    column="tableware_number"    />
+        <result property="tablewareStatus"    column="tableware_status"    />
+    </resultMap>
+
+    <sql id="selectSysOrdersVo">
+        select id, number, status, user_id, address_book_id, order_time, checkout_time, pay_method, pay_status, amount, remark, phone, address, user_name, consignee, cancel_reason, rejection_reason, cancel_time, estimated_delivery_time, delivery_status, delivery_time, pack_amount, tableware_number, tableware_status from sys_orders
+    </sql>
+
+    <select id="selectSysOrdersList" parameterType="com.ruoyi.order.domin.enity.Orders" resultMap="SysOrdersResult">
+        <include refid="selectSysOrdersVo"/>
+        <where>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="addressBookId != null "> and address_book_id = #{addressBookId}</if>
+            <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="checkoutTime != null "> and checkout_time = #{checkoutTime}</if>
+            <if test="payMethod != null "> and pay_method = #{payMethod}</if>
+            <if test="payStatus != null "> and pay_status = #{payStatus}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="cancelReason != null  and cancelReason != ''"> and cancel_reason = #{cancelReason}</if>
+            <if test="rejectionReason != null  and rejectionReason != ''"> and rejection_reason = #{rejectionReason}</if>
+            <if test="cancelTime != null "> and cancel_time = #{cancelTime}</if>
+            <if test="estimatedDeliveryTime != null "> and estimated_delivery_time = #{estimatedDeliveryTime}</if>
+            <if test="deliveryStatus != null "> and delivery_status = #{deliveryStatus}</if>
+            <if test="deliveryTime != null "> and delivery_time = #{deliveryTime}</if>
+            <if test="packAmount != null "> and pack_amount = #{packAmount}</if>
+            <if test="tablewareNumber != null "> and tableware_number = #{tablewareNumber}</if>
+            <if test="tablewareStatus != null "> and tableware_status = #{tablewareStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectSysOrdersList" parameterType="com.ruoyi.order.domin.enity.Orders" resultMap="SysOrdersResult">
+        <include refid="selectSysOrdersVo"/>
+        <where>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="addressBookId != null "> and address_book_id = #{addressBookId}</if>
+            <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="checkoutTime != null "> and checkout_time = #{checkoutTime}</if>
+            <if test="payMethod != null "> and pay_method = #{payMethod}</if>
+            <if test="payStatus != null "> and pay_status = #{payStatus}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="cancelReason != null  and cancelReason != ''"> and cancel_reason = #{cancelReason}</if>
+            <if test="rejectionReason != null  and rejectionReason != ''"> and rejection_reason = #{rejectionReason}</if>
+            <if test="cancelTime != null "> and cancel_time = #{cancelTime}</if>
+            <if test="estimatedDeliveryTime != null "> and estimated_delivery_time = #{estimatedDeliveryTime}</if>
+            <if test="deliveryStatus != null "> and delivery_status = #{deliveryStatus}</if>
+            <if test="deliveryTime != null "> and delivery_time = #{deliveryTime}</if>
+            <if test="packAmount != null "> and pack_amount = #{packAmount}</if>
+            <if test="tablewareNumber != null "> and tableware_number = #{tablewareNumber}</if>
+            <if test="tablewareStatus != null "> and tableware_status = #{tablewareStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectSysOrdersById" parameterType="Long" resultMap="SysOrdersResult">
+        <include refid="selectSysOrdersVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysOrders" parameterType="com.ruoyi.order.domin.enity.Orders" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="number != null">number,</if>
+            <if test="status != null">status,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="addressBookId != null">address_book_id,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="checkoutTime != null">checkout_time,</if>
+            <if test="payMethod != null">pay_method,</if>
+            <if test="payStatus != null">pay_status,</if>
+            <if test="amount != null">amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="phone != null">phone,</if>
+            <if test="address != null">address,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="consignee != null">consignee,</if>
+            <if test="cancelReason != null">cancel_reason,</if>
+            <if test="rejectionReason != null">rejection_reason,</if>
+            <if test="cancelTime != null">cancel_time,</if>
+            <if test="estimatedDeliveryTime != null">estimated_delivery_time,</if>
+            <if test="deliveryStatus != null">delivery_status,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="packAmount != null">pack_amount,</if>
+            <if test="tablewareNumber != null">tableware_number,</if>
+            <if test="tablewareStatus != null">tableware_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="number != null">#{number},</if>
+            <if test="status != null">#{status},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="addressBookId != null">#{addressBookId},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="checkoutTime != null">#{checkoutTime},</if>
+            <if test="payMethod != null">#{payMethod},</if>
+            <if test="payStatus != null">#{payStatus},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="address != null">#{address},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="consignee != null">#{consignee},</if>
+            <if test="cancelReason != null">#{cancelReason},</if>
+            <if test="rejectionReason != null">#{rejectionReason},</if>
+            <if test="cancelTime != null">#{cancelTime},</if>
+            <if test="estimatedDeliveryTime != null">#{estimatedDeliveryTime},</if>
+            <if test="deliveryStatus != null">#{deliveryStatus},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="packAmount != null">#{packAmount},</if>
+            <if test="tablewareNumber != null">#{tablewareNumber},</if>
+            <if test="tablewareStatus != null">#{tablewareStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysOrders" parameterType="com.ruoyi.order.domin.enity.Orders">
+        update sys_orders
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="number != null">number = #{number},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="addressBookId != null">address_book_id = #{addressBookId},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="checkoutTime != null">checkout_time = #{checkoutTime},</if>
+            <if test="payMethod != null">pay_method = #{payMethod},</if>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="consignee != null">consignee = #{consignee},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="rejectionReason != null">rejection_reason = #{rejectionReason},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="estimatedDeliveryTime != null">estimated_delivery_time = #{estimatedDeliveryTime},</if>
+            <if test="deliveryStatus != null">delivery_status = #{deliveryStatus},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+            <if test="packAmount != null">pack_amount = #{packAmount},</if>
+            <if test="tablewareNumber != null">tableware_number = #{tablewareNumber},</if>
+            <if test="tablewareStatus != null">tableware_status = #{tablewareStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="rejectOrdersById" parameterType="com.ruoyi.order.domin.dto.OrdersRejectionDTO">
+        UPDATE sys_orders
+        SET status = 6
+        <if test="rejectionReason != null">
+            , rejection_reason = #{rejectionReason}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <update id="cancelOrdersById" parameterType="com.ruoyi.order.domin.dto.OrdersCancelDTO">
+        UPDATE sys_orders
+        SET status = 6
+        <if test="cancelReason != null">
+            , cancel_reason = #{cancelReason}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteSysOrdersById" parameterType="Long">
+        delete from sys_orders where id = #{id}
+    </delete>
+
+    <delete id="deleteSysOrdersByIds" parameterType="String">
+        delete from sys_orders where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
