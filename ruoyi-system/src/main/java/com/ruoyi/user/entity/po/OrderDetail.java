@@ -21,6 +21,7 @@ public class OrderDetail implements Serializable {
 
     private Long id;
 
+    private Long userId;
     //名称
     private String name;
 

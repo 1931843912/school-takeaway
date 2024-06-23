@@ -67,7 +67,7 @@ public class ShoppingCartController extends BaseController {
     @PostMapping("/add")
     public AjaxResult addShoppingCar(String openid , @RequestBody ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart cart = CopyTools.copy(shoppingCartDTO, ShoppingCart.class);
-        cart.setUserId(Long.getLong(openid));
+//        cart.setUserId(Long.getLong(openid));
         Long userId = userService.getUserId(openid);
         cart.setUserId(userId);
         System.out.println(cart.getUserId());

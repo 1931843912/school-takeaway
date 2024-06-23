@@ -47,6 +47,10 @@ user:
 
 # Spring配置
 spring:
+  shop:
+    address: 北京市海淀区上地十街10号
+  baidu:
+    ak: your-ak
   # 资源信息
   messages:
     # 国际化资源文件路径

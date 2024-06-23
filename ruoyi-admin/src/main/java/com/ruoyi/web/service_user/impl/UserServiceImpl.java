@@ -39,8 +39,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> impl
     public Integer getShopStatus(Long userid) {
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id",userid);
-        List<Integer> status = sysUserDao.selectList(queryWrapper).stream().map(SysUserEntity::getShopstatus).collect(Collectors.toList());
-        return status.get(0);
+//        List<Integer> status = sysUserDao.selectList(queryWrapper).stream().map(SysUserEntity::getShopstatus).collect(Collectors.toList());
+//        return status.get(0);
+        return 1;
     }
 
     @Override

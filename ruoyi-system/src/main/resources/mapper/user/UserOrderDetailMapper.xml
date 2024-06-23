@@ -4,10 +4,10 @@
 <mapper namespace="com.ruoyi.user.mapper.UserOrderDetailMapper">
 
     <insert id="insertBatch">
-        insert into sys_order_detail (name, image, order_id, dish_id, setmeal_id, dish_flavor, number, amount)
+        insert into sys_order_detail (user_id, name, image, order_id, dish_id, setmeal_id, dish_flavor, number, amount)
             values
-        <foreach collection="orderDetailList" item="od" separator=",">
-            (#{od.name},#{od.image},#{od.orderId},#{od.dishId},#{od.setmealId},#{od.dishFlavor},#{od.number},#{od.amount})
+        <foreach collection="myOrderDetailList" item="od" separator=",">
+            (#{od.userId},#{od.name},#{od.image},#{od.orderId},#{od.dishId},#{od.setmealId},#{od.dishFlavor},#{od.number},#{od.amount})
         </foreach>
     </insert>
 </mapper>
