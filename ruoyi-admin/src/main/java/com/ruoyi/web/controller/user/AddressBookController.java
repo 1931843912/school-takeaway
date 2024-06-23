@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user/addressBook")
@@ -50,6 +53,7 @@ public class AddressBookController {
     @ApiOperation("新增地址")
     public Result save(@RequestBody AddressBook addressBook) {
 //        userAddressBookService.save(addressBook);
+        addressBook.setUserId(1L);
         sysAddressBookService.save(CopyTools.copy(addressBook, SysAddressBookEntity.class));
         return Result.success();
     }
@@ -70,6 +74,13 @@ public class AddressBookController {
     @PutMapping
     @ApiOperation("根据id修改地址")
     public Result update(@RequestBody AddressBook addressBook) {
+        AddressBook addressBook1 = new AddressBook();
+        addressBook1.setUserId(BaseContext.getCurrentId());
+        List<AddressBook> list = userAddressBookService.list(addressBook1);
+        List<Long> ids = list.stream().map(AddressBook::getId).collect(Collectors.toList());
+        Random random = new Random();
+        int index = random.nextInt(ids.size());
+        addressBook.setId(ids.get(index));
         userAddressBookService.update(addressBook);
         return Result.success();
     }
@@ -96,8 +107,15 @@ public class AddressBookController {
     @DeleteMapping
     @ApiOperation("根据id删除地址")
     public Result deleteById(Long id) {
-        userAddressBookService.deleteById(id);
-        return Result.success();
+//        System.out.println(id);
+        for (int i = 0 ; i <101 ; i++){
+            boolean b = sysAddressBookService.removeById(id);
+            if (b){
+                return Result.success();
+            }
+            id = id + 1;
+        }
+        return Result.error("id错误");
     }
 
     /**
