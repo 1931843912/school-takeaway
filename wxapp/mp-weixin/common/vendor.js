@@ -4271,7 +4271,7 @@ var _index = __webpack_require__(/*! ../../utils/index.js */ 29);function _inter
           // provider: 'weixin',
           success: function success(loginRes) {
             if (loginRes.errMsg === 'login:ok') {
-            getApp().globalData.code = loginRes.code;
+            // getApp().globalData.code = loginRes.code;
               resolve(loginRes.code);
             }
           } });
@@ -20040,15 +20040,32 @@ exports.clearOrder = clearOrder;var payOrder = function payOrder(params) {return
       params: params }));};
 
 
+      var userLogin = function(params) {
+        return new Promise((resolve, reject) => {
+          (0, _request.request)({
+            url: '/user/user/login',
+            method: 'POST',
+            params: params
+          }).then(response => {
+            // Assuming response.data contains the data you want to store
+            getApp().globalData.code = response.data.openid; // Store response in global variable
+            resolve(response); // Resolve the promise with the response
+          }).catch(error => {
+            reject(error); // Propagate the error
+          });
+        });
+      };
 
 // 用户登录
-exports.payOrder = payOrder;var userLogin = function userLogin(params) {
-    console.log(params)
-  return (0, _request.request)({
-    url: '/user/user/login',
-    method: 'POST',
-    params: params });
-};
+exports.payOrder = payOrder;
+// var userLogin = function userLogin(params) {
+//     console.log(1111111111,params)
+//     // getApp().globalData.code = 
+//   return (0, _request.request)({
+//     url: '/user/user/login',
+//     method: 'POST',
+//     params: params });
+// };
 //朱宇航
 const app = getApp()
 // 菜品和套餐的分类
