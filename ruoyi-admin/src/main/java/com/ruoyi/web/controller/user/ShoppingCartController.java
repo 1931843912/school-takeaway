@@ -1,16 +1,19 @@
 package com.ruoyi.web.controller.user;
 
 import java.util.List;
+import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.user.entity.dto.ShoppingCartDTO;
 import com.ruoyi.user.entity.po.ShoppingCart;
+import com.ruoyi.user.result.Result;
 import com.ruoyi.user.service.UserShoppingCartService;
+import com.ruoyi.web.entity_user.SysUserEntity;
+import com.ruoyi.web.service_user.UserService;
+import com.ruoyi.web.utils_user.CopyTools;
+import com.ruoyi.web.utils_user.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -26,15 +29,22 @@ import com.ruoyi.common.core.page.TableDataInfo;
 public class ShoppingCartController extends BaseController {
     @Autowired
     private UserShoppingCartService shoppingCartService;
-
+    @Autowired
+    private UserService userService;
     /**
      * 查询购物车列表
      */
+//    @GetMapping("/list")
+//    public TableDataInfo list() {
+//        startPage();
+//        List<ShoppingCart> list = shoppingCartService.showShoppingCart();
+//        return getDataTable(list);
+//    }
     @GetMapping("/list")
-    public TableDataInfo list() {
+    public Result list() {
         startPage();
         List<ShoppingCart> list = shoppingCartService.showShoppingCart();
-        return getDataTable(list);
+        return Result.success(list);
     }
 
     // /**
@@ -48,11 +58,22 @@ public class ShoppingCartController extends BaseController {
     /**
      * 新增购物车
      */
+//    @PostMapping("/add")
+//    public AjaxResult add(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+//        // System.out.println(shoppingCart)
+//        return toAjax(shoppingCartService.addShoppingCart(shoppingCartDTO));
+//    }
+
     @PostMapping("/add")
-    public AjaxResult add(@RequestBody ShoppingCartDTO shoppingCartDTO) {
-        // System.out.println(shoppingCart)
-        return toAjax(shoppingCartService.addShoppingCart(shoppingCartDTO));
+    public AjaxResult addShoppingCar(String openid , @RequestBody ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart cart = CopyTools.copy(shoppingCartDTO, ShoppingCart.class);
+        cart.setUserId(Long.getLong(openid));
+        Long userId = userService.getUserId(openid);
+        cart.setUserId(userId);
+        System.out.println(cart.getUserId());
+        return toAjax(shoppingCartService.addShoppingCart(cart));
     }
+
 
     // /**
     //  * 修改购物车
@@ -70,4 +91,5 @@ public class ShoppingCartController extends BaseController {
     public AjaxResult remove(@RequestBody ShoppingCartDTO shoppingCartDTO) {
         return toAjax(shoppingCartService.subShoppingCart(shoppingCartDTO));
     }
+
 }

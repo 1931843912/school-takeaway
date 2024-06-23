@@ -33,14 +33,10 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
      * 添加购物车
      * @param shoppingCartDTO
      */
-    public int addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+    public int addShoppingCart(ShoppingCart shoppingCartDTO) {
         //判断当前加入到购物车中的商品是否已经存在了
         ShoppingCart shoppingCart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
-        Long userId = BaseContext.getCurrentId();
-        System.out.println(userId);
-        shoppingCart.setUserId(userId);
-
         List<ShoppingCart> list = userShoppingCartMapper.list(shoppingCart);
 
         //如果已经存在了，只需要将数量加一

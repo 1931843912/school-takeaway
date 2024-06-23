@@ -3,6 +3,7 @@ package com.ruoyi.web.service_user;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.user.entity.po.User;
 import com.ruoyi.web.entity_user.SysUserEntity;
 import com.ruoyi.web.utils_user.PageUtils;
 
@@ -18,5 +19,6 @@ public interface UserService extends IService<SysUserEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
     Integer getShopStatus(Long userid);
+    Long getUserId(String openid);
 }
 

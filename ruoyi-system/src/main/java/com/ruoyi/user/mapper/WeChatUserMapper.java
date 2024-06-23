@@ -35,4 +35,5 @@ public interface WeChatUserMapper {
 
     @Select("select id from user where openid=#{openid}")
     Long getUser(String openid);
+
 }
