@@ -77,6 +77,8 @@ public class UserOrderServiceImpl implements UserOrderService {
         //checkOutOfRange(addressBook.getCityName() + addressBook.getDistrictName() + addressBook.getDetail());
 
         //查询当前用户的购物车数据
+        //Todo 传入参数openId
+//        Long userId = userService.getUserId(openid);
         Long userId = 1L;
 
 
