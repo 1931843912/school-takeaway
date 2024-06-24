@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.dish;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -77,6 +78,19 @@ public class DishController extends BaseController {
         List<DishVo> list = dishService.selectDishList(dish);
         return getDataTable(list);
     }
+
+    /**
+     * 查询菜品列表
+     */
+    @GetMapping("/categorylist")
+    public TableDataInfo categoryList()
+    {
+        startPage();
+        List<Category> list = dishService.categoryList();
+        return getDataTable(list);
+    }
+
+
 
 
     @GetMapping("/dishFlavors/{id}")

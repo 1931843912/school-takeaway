@@ -156,8 +156,7 @@
 }
 </style>
 <script>
-import { listDish, getDish, delDish, addDish, updateDish } from "@/api/merchant/dish/index";
-import { listCategory } from '@/api/merchant/category/index'
+import { listDish, getDish, delDish, addDish, updateDish,ListDishCategory } from "@/api/merchant/dish/index";
 import { getDishFlavors } from "../../../api/merchant/dish";
 let id = 1000;
 export default {
@@ -253,7 +252,7 @@ export default {
     // 查询分类列表
     getCategoryList() {
       this.loading = true;
-      listCategory(this.queryParams).then(response => {
+      ListDishCategory(this.queryParams).then(response => {
         this.categoryList = response.rows;
         this.total = response.total;
         this.loading = false;

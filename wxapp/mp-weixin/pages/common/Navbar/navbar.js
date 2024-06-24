@@ -149,7 +149,8 @@ var _default =
   methods: {
     myCenterFun: function myCenterFun() {
       uni.navigateTo({
-        url: '/pages/merchant/index' });
+        // url: '/pages/merchant/index' });//跳转到商家列表
+        url: '/pages/my/my' });//跳转到个人中心
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

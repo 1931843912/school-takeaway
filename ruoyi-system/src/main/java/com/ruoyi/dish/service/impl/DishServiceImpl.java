@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.common.constant.MessageConstant;
 import com.ruoyi.common.constant.StatusConstant;
 import com.ruoyi.common.core.result.PageResult;
@@ -136,6 +137,11 @@ public class DishServiceImpl implements DishService {
     @Override
     public int deleteDishById(Long id) {
         return dishTMapper.deleteDishById(id);
+    }
+
+    @Override
+    public List<Category> categoryList() {
+        return dishTMapper.categoryList(SecurityUtils.getUserId());
     }
 
     @Override

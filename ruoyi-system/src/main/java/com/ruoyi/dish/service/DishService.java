@@ -2,6 +2,7 @@ package com.ruoyi.dish.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.common.core.result.PageResult;
 import com.ruoyi.dish.domin.DishEntity;
 import com.ruoyi.dish.domin.dto.DishDTO;
@@ -92,4 +93,6 @@ public interface DishService {
      */
     public int deleteDishById(Long id);
 
+    //获取商家的菜品分类
+    List<Category> categoryList();
 }

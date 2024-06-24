@@ -1,10 +1,12 @@
 package com.ruoyi.dish.mapper;
 
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.dish.domin.dto.DishDTO;
 import com.ruoyi.dish.domin.dto.DishEditDTO;
 import com.ruoyi.dish.domin.entity.DFlavorEntity;
 import com.ruoyi.dish.domin.vo.DishVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -54,4 +56,7 @@ public interface DishTMapper {
     public int deleteDishByIds(Long[] ids);
 
     public int deleteDishFlavorsByIds(Long[] ids);
+
+    @Select("select * from sys_category where type=1 and user_id=#{userId} and status=0")
+    List<Category> categoryList(Long userId);
 }

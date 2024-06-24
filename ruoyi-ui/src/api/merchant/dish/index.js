@@ -9,6 +9,15 @@ export function listDish(query) {
   })
 }
 
+// 查询菜品分类列表
+export function ListDishCategory(query) {
+  return request({
+    url: '/admin/dish/categorylist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询菜品详细
 export function getDish(id) {
   return request({
