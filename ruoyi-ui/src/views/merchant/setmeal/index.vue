@@ -132,7 +132,6 @@
 
 <script>
 import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal, ListDish,ListSetmealCategory } from "@/api/merchant/setmeal/index";
-import { listCategory } from '@/api/merchant/category/index'
 export default {
   name: "Setmeal",
   dicts: ['sys_normal_disable'],
