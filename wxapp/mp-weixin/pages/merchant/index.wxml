@@ -4,7 +4,7 @@
     <!-- Header Section -->
     <view class="header">
         <view class="location-icon"></view>
-        <view class="location-text">广州市华南师范大学城区</view>
+        <view class="location-text">福州大学至诚学院</view>
         <view class="location-dropdown"></view>
     </view>
 

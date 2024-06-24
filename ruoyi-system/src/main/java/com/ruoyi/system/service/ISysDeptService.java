@@ -84,6 +84,14 @@ public interface ISysDeptService
     public boolean checkDeptExistUser(Long deptId);
 
     /**
+     * 查询部门是否停用
+     *
+     * @param deptId 部门ID
+     * @return 结果 true 正在使用 false 已经停用
+     */
+    public boolean checkDeptAva(Long deptId);
+
+    /**
      * 校验部门名称是否唯一
      * 
      * @param dept 部门信息

@@ -20189,7 +20189,7 @@ exports.queryOrderUserPage = queryOrderUserPage;var submitOrderSubmit = function
 
 // 查询地址列表
 exports.submitOrderSubmit = submitOrderSubmit;var queryAddressBookList = function queryAddressBookList(params) {
-    params.code=getApp().globalData.code;
+    // params.code=getApp().globalData.code;
   return (0, _request.request)({
     url: '/user/addressBook/list',
     method: 'GET',
@@ -20312,7 +20312,9 @@ exports.cancelOrder = cancelOrder;var reminderOrder = function reminderOrder(par
       method: 'GET' }));};
 
 // 订单支付
-exports.reminderOrder = reminderOrder;var paymentOrder = function paymentOrder(params) {return (
+exports.reminderOrder = reminderOrder;var paymentOrder = function paymentOrder(params) {
+    console.log(params)
+    return (
     (0, _request.request)({
       url: "/user/order/payment",
       method: 'PUT',

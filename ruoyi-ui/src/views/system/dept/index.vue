@@ -328,6 +328,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
+      if(row.status == "0"){
+        return this.$modal.msgError("请先停用该门店后再删除！");
+      }
       this.$modal.confirm('是否确认删除名称为"' + row.deptName + '"的数据项？').then(function() {
         return delDept(row.deptId);
       }).then(() => {

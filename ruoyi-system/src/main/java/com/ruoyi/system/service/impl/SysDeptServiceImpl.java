@@ -164,6 +164,12 @@ public class SysDeptServiceImpl implements ISysDeptService
         return result > 0;
     }
 
+    @Override
+    public boolean checkDeptAva(Long deptId) {
+        int result = deptMapper.checkDeptAva(deptId);
+        return result == 0;
+    }
+
     /**
      * 校验部门名称是否唯一
      * 
