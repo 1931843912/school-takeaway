@@ -8,6 +8,7 @@ import com.ruoyi.order.mapper.OrdersMapper;
 import com.ruoyi.order.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
@@ -28,8 +29,7 @@ public class OrdersServiceImpl implements OrdersService {
      * @return 订单
      */
     @Override
-    public Orders selectSysOrdersById(Long id)
-    {
+    public Orders selectSysOrdersById(Long id) {
         return sysOrdersMapper.selectSysOrdersById(id);
     }
 
@@ -40,8 +40,7 @@ public class OrdersServiceImpl implements OrdersService {
      * @return 订单
      */
     @Override
-    public List<Orders> selectSysOrdersList(Orders sysOrders)
-    {
+    public List<Orders> selectSysOrdersList(Orders sysOrders) {
         return sysOrdersMapper.selectSysOrdersList(sysOrders);
     }
 
@@ -52,8 +51,7 @@ public class OrdersServiceImpl implements OrdersService {
      * @return 结果
      */
     @Override
-    public int insertSysOrders(Orders sysOrders)
-    {
+    public int insertSysOrders(Orders sysOrders) {
         return sysOrdersMapper.insertSysOrders(sysOrders);
     }
 
@@ -64,8 +62,7 @@ public class OrdersServiceImpl implements OrdersService {
      * @return 结果
      */
     @Override
-    public int updateSysOrders(Orders sysOrders)
-    {
+    public int updateSysOrders(Orders sysOrders) {
         return sysOrdersMapper.updateSysOrders(sysOrders);
     }
 
@@ -76,8 +73,7 @@ public class OrdersServiceImpl implements OrdersService {
      * @return 结果
      */
     @Override
-    public int deleteSysOrdersByIds(Long[] ids)
-    {
+    public int deleteSysOrdersByIds(Long[] ids) {
         return sysOrdersMapper.deleteSysOrdersByIds(ids);
     }
 
@@ -88,8 +84,7 @@ public class OrdersServiceImpl implements OrdersService {
      * @return 结果
      */
     @Override
-    public int deleteSysOrdersById(Long id)
-    {
+    public int deleteSysOrdersById(Long id) {
         return sysOrdersMapper.deleteSysOrdersById(id);
     }
 
@@ -107,23 +102,21 @@ public class OrdersServiceImpl implements OrdersService {
     /**
      * 拒绝订单
      *
-     * @param ordersRejectionDTO 订单id及拒绝理由
      * @return 结果
      */
     @Override
-    public int rejectOrdersById(OrdersRejectionDTO ordersRejectionDTO) {
-        return sysOrdersMapper.rejectOrdersById(ordersRejectionDTO);
+    public int rejectOrdersById(Long id) {
+        return sysOrdersMapper.rejectOrdersById(id);
     }
 
     /**
      * 取消订单
      *
-     * @param ordersCancelDTO 订单id及取消理由
      * @return 结果
      */
     @Override
-    public int cancelOrdersById(OrdersCancelDTO ordersCancelDTO) {
-        return sysOrdersMapper.cancelOrdersById(ordersCancelDTO);
+    public int cancelOrdersById(Long id) {
+        return sysOrdersMapper.cancelOrdersById(id);
     }
 
     /**
@@ -154,7 +147,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public OrderOverViewVO getOrdersCount() {
 
-        Integer total  = getConfirmed() + getToBeConfirmed() + getDeliveryInProgress()
+        Integer total = getConfirmed() + getToBeConfirmed() + getDeliveryInProgress()
                 + getCompletedOrders() + getCancelledOrders();
 
         OrderOverViewVO orderOverViewVO = new OrderOverViewVO();

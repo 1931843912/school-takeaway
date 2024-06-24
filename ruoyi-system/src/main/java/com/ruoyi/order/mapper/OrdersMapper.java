@@ -71,20 +71,18 @@ public interface OrdersMapper {
 
     /**
      * 拒绝订单
-     *
-     * @param ordersRejectionDTO 订单id及拒绝理由
      * @return 结果
      */
-    int rejectOrdersById(OrdersRejectionDTO ordersRejectionDTO);
+    @Update("UPDATE sys_orders SET `status` = 6 WHERE id = #{id}")
+    int rejectOrdersById(Long id);
 
 
     /**
      * 取消订单
-     *
-     * @param ordersCancelDTO 订单id及取消理由
      * @return 结果
      */
-    int cancelOrdersById(OrdersCancelDTO ordersCancelDTO);
+    @Update("UPDATE sys_orders SET `status` = 6 WHERE id = #{id}")
+    int cancelOrdersById(Long id);
 
     /**
      * 完成订单

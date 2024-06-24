@@ -64,9 +64,9 @@ public interface OrdersService {
 
     int takingOrdersById(Long orderId);
 
-    int rejectOrdersById(OrdersRejectionDTO ordersRejectionDTO);
+    int rejectOrdersById(Long id);
 
-    int cancelOrdersById(OrdersCancelDTO ordersCancelDTO);
+    int cancelOrdersById(Long id);
 
     int completeOrdersById(Long id);
 

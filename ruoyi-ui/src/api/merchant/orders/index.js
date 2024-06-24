@@ -53,11 +53,10 @@ export function getOrdersCount() {
 
 
 // 接单 status变成3
-export function takingOrdersById(data) {
+export function takingOrdersById(id) {
   return request({
-    url: '/admin/order/confirm',
+    url: '/admin/order/confirm/'+id,
     method: 'put',
-    data: data
   })
 }
 
@@ -78,19 +77,17 @@ export function completeOrdersById(id) {
 }
 
 // 取消订单 status变成6
-export function cancelOrdersById(data) {
+export function cancelOrdersById(id) {
   return request({
-    url: '/admin/order/cancel',
+    url: '/admin/order/cancel/' + id,
     method: 'put',
-    data: data
   })
 }
 
 // 拒绝订单 status变成6
-export function rejectOrdersById(data) {
+export function rejectOrdersById(id) {
   return request({
-    url: '/admin/order/rejection',
+    url: '/admin/order/rejection/' + id,
     method: 'put',
-    data: data
   })
 }

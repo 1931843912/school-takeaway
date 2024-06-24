@@ -461,7 +461,7 @@ export default {
       this.reset();
       const id = row.id || this.ids
       this.$modal.confirm('是否确认接单订单编号为"' + id + '"的数据项？').then(function () {
-        return confirmOrdersById(id);
+        return takingOrdersById(id);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("接单成功");

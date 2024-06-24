@@ -34,7 +34,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/admin/order")
-public class OrdersController extends BaseController{
+public class OrdersController extends BaseController {
 
     @Autowired
     private OrdersService sysOrdersService;
@@ -43,8 +43,7 @@ public class OrdersController extends BaseController{
      * 查询订单列表
      */
     @GetMapping("/list")
-    public TableDataInfo list(Orders sysOrders)
-    {
+    public TableDataInfo list(Orders sysOrders) {
         startPage();
 
         List<Orders> list = sysOrdersService.selectSysOrdersList(sysOrders);
@@ -56,8 +55,7 @@ public class OrdersController extends BaseController{
      */
     @Log(title = "订单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, Orders sysOrders)
-    {
+    public void export(HttpServletResponse response, Orders sysOrders) {
         List<Orders> list = sysOrdersService.selectSysOrdersList(sysOrders);
         ExcelUtil<Orders> util = new ExcelUtil<Orders>(Orders.class);
         util.exportExcel(response, list, "订单数据");
@@ -67,8 +65,7 @@ public class OrdersController extends BaseController{
      * 获取订单详细信息
      */
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(sysOrdersService.selectSysOrdersById(id));
     }
 
@@ -76,8 +73,7 @@ public class OrdersController extends BaseController{
      * 各个状态的订单数量统计
      */
     @GetMapping("/statistics")
-    public AjaxResult getOrdersCount()
-    {
+    public AjaxResult getOrdersCount() {
         return success(sysOrdersService.getOrdersCount());
     }
 
@@ -86,8 +82,7 @@ public class OrdersController extends BaseController{
      */
     @Log(title = "订单", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Orders sysOrders)
-    {
+    public AjaxResult add(@RequestBody Orders sysOrders) {
         System.out.println(sysOrders);
         return success(sysOrdersService.insertSysOrders(sysOrders));
     }
@@ -97,8 +92,7 @@ public class OrdersController extends BaseController{
      */
     @Log(title = "订单", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Orders sysOrders)
-    {
+    public AjaxResult edit(@RequestBody Orders sysOrders) {
         return toAjax(sysOrdersService.updateSysOrders(sysOrders));
 
     }
@@ -132,9 +126,8 @@ public class OrdersController extends BaseController{
      * 修改订单 —— 接单 status变成3
      */
     @Log(title = "接单", businessType = BusinessType.UPDATE)
-    @PutMapping("/confirm")
-    public AjaxResult takingOrdersById(@RequestBody Long orderId)
-    {
+    @PutMapping("/confirm/{id}")
+    public AjaxResult takingOrdersById(@PathVariable("id") Long orderId) {
         return toAjax(sysOrdersService.takingOrdersById(orderId));
     }
 
@@ -143,10 +136,9 @@ public class OrdersController extends BaseController{
      * 修改订单 —— 拒单 status变成6
      */
     @Log(title = "拒单", businessType = BusinessType.UPDATE)
-    @PutMapping("/rejection")
-    public AjaxResult rejectOrdersById(@RequestBody OrdersRejectionDTO ordersRejectionDTO)
-    {
-        return toAjax(sysOrdersService.rejectOrdersById(ordersRejectionDTO));
+    @PutMapping("/rejection/{id}")
+    public AjaxResult rejectOrdersById(@PathVariable("id") Long id) {
+        return toAjax(sysOrdersService.rejectOrdersById(id));
     }
 
 
@@ -154,18 +146,17 @@ public class OrdersController extends BaseController{
      * 修改订单 —— 取消订单 status变成6
      */
     @Log(title = "取消订单", businessType = BusinessType.UPDATE)
-    @PutMapping("/cancel")
-    public AjaxResult cancelOrdersById(@RequestBody OrdersCancelDTO ordersCancelDTO)
-    {
-        return toAjax(sysOrdersService.cancelOrdersById(ordersCancelDTO));
+    @PutMapping("/cancel/{id}")
+    public AjaxResult cancelOrdersById(@PathVariable("id") Long id) {
+        return toAjax(sysOrdersService.cancelOrdersById(id));
     }
+
     /**
      * 删除订单
      */
     @Log(title = "订单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(sysOrdersService.deleteSysOrdersByIds(ids));
     }
 }
