@@ -129,6 +129,9 @@ public class SetmealController extends BaseController {
     @Log(title = "套餐", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
+        if(setmealService.checkSetmealStatus(ids)){
+            return warn("当时需要删除的套餐中存在未停用的套餐,请先停用套餐后再删除");
+        }
         return toAjax(setmealService.deleteSetmealByIds(ids));
     }
 }

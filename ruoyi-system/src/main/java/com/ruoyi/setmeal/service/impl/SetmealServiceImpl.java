@@ -158,4 +158,16 @@ public class SetmealServiceImpl implements ISetmealService {
     public List<Category> categoryList() {
         return setmealMapper.categoryList(SecurityUtils.getUserId());
     }
+
+    @Override
+    public boolean checkSetmealStatus(Long[] ids) {
+        for (Long id : ids) {
+            SetmealDTO setmealDTO = selectSetmealById(id);
+            if (setmealDTO.getStatus() == 0) {
+                // 套餐正在售卖 无法删除
+                return true;
+            }
+        }
+        return false;
+    }
 }

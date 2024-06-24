@@ -63,4 +63,6 @@ public interface ISetmealService {
     List<Setmeal> selectDishList();
 
     List<Category> categoryList();
+
+    boolean checkSetmealStatus(Long[] ids);
 }
