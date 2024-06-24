@@ -97,4 +97,30 @@ public class CategoryServiceImpl implements CategoryService {
     public int deleteCategoryById(Long id) {
         return categoryMapper.deleteCategoryById(id);
     }
+
+
+    @Override
+    public boolean categoryUsed(Category category) {
+        //需要停用分类的情况
+        if (category.getStatus() == 1) {
+            //true分类正在使用中,无法停用
+            int res = categoryMapper.checkDishCategoryUsed(category.getId());
+            res += categoryMapper.checkSetmealCategoryUsed(category.getId());
+            return res > 0;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean categorysUsed(Long[] ids) {
+        for (Long id : ids) {
+            //true分类正在使用中,无法停用
+            int res = categoryMapper.checkDishCategoryUsed(id);
+            res += categoryMapper.checkSetmealCategoryUsed(id);
+            if (res > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

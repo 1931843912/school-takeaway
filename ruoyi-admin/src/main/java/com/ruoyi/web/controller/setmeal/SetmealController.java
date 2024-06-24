@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.setmeal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.setmeal.domain.dto.SetmealDTO;
 import com.ruoyi.setmeal.domain.entity.Setmeal;
 import com.ruoyi.setmeal.service.ISetmealService;
@@ -30,7 +31,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2024-06-14
  */
 @RestController
-@RequestMapping("/merchant/setmeal")
+@RequestMapping("/admin/setmeal")
 public class SetmealController extends BaseController {
     @Autowired
     private ISetmealService setmealService;
@@ -38,7 +39,7 @@ public class SetmealController extends BaseController {
     /**
      * 查询套餐列表
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:list')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:list')")
     @GetMapping("/list")
     public TableDataInfo list(Setmeal setmeal) {
         startPage();
@@ -47,9 +48,21 @@ public class SetmealController extends BaseController {
     }
 
     /**
+     * 查询套餐分类列表
+     */
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:categorylist')")
+    @GetMapping("/categorylist")
+    public TableDataInfo categoryList() {
+        startPage();
+        List<Category> list = setmealService.categoryList();
+        return getDataTable(list);
+    }
+
+
+    /**
      * 查询套餐列表
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:dishlist')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:dishlist')")
     @GetMapping("/dishlist")
     public TableDataInfo dishList() {
         startPage();
@@ -57,10 +70,11 @@ public class SetmealController extends BaseController {
         return getDataTable(list);
     }
 
+
     /**
      * 导出套餐列表
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:export')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:export')")
     @Log(title = "套餐", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Setmeal setmeal) {
@@ -72,7 +86,7 @@ public class SetmealController extends BaseController {
     /**
      * 获取套餐详细信息
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:query')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(setmealService.selectSetmealById(id));
@@ -81,7 +95,7 @@ public class SetmealController extends BaseController {
     /**
      * 新增套餐
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:add')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:add')")
     @Log(title = "套餐", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SetmealDTO setmeal) {
@@ -91,7 +105,7 @@ public class SetmealController extends BaseController {
     /**
      * 修改套餐
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:edit')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:edit')")
     @Log(title = "套餐", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SetmealDTO setmeal) {
@@ -101,7 +115,7 @@ public class SetmealController extends BaseController {
     /**
      * 套餐状态修改
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:changeSetmealStatus')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:changeSetmealStatus')")
     @PutMapping("/changeSetmealStatus")
     public AjaxResult changeSetmealStatus(@RequestBody Setmeal setmeal) {
         return toAjax(setmealService.changeSetmealStatus(setmeal));
@@ -111,7 +125,7 @@ public class SetmealController extends BaseController {
     /**
      * 删除套餐
      */
-    @PreAuthorize("@ss.hasPermi('merchant:setmeal:remove')")
+    @PreAuthorize("@ss.hasPermi('admin:setmeal:remove')")
     @Log(title = "套餐", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {

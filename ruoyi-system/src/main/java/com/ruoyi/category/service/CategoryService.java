@@ -59,4 +59,8 @@ public interface CategoryService {
      * @return 结果
      */
     public int deleteCategoryById(Long id);
+
+    boolean categoryUsed(Category category);
+
+    boolean categorysUsed(Long[] ids);
 }

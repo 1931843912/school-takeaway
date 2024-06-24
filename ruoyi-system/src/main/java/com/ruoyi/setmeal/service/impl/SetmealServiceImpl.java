@@ -3,6 +3,7 @@ package com.ruoyi.setmeal.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.dish.domin.dto.DishEditDTO;
@@ -151,5 +152,10 @@ public class SetmealServiceImpl implements ISetmealService {
     @Override
     public List<Setmeal> selectDishList() {
         return setmealMapper.selectDishList(SecurityUtils.getUserId());
+    }
+
+    @Override
+    public List<Category> categoryList() {
+        return setmealMapper.categoryList(SecurityUtils.getUserId());
     }
 }

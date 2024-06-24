@@ -1,6 +1,7 @@
 package com.ruoyi.category.mapper;
 
 import com.ruoyi.category.domain.entity.Category;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -55,4 +56,11 @@ public interface CategoryMapper {
      * @return 结果
      */
     public int deleteCategoryByIds(Long[] ids);
+
+    @Select("SELECT count(*) from sys_dish WHERE category_id = #{categoryId} and status=0")
+    int checkDishCategoryUsed(Long categoryId);
+
+    @Select("SELECT count(*) from sys_setmeal WHERE category_id = #{categoryId} and status=0")
+    int checkSetmealCategoryUsed(Long categoryId);
+
 }

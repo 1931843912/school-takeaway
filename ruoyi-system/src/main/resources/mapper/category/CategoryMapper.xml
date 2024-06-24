@@ -30,6 +30,7 @@
             <if test="status != null "> and status = #{status}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
         </where>
+        order by type asc
     </select>
 
     <select id="selectCategoryById" parameterType="Category" resultMap="CategoryResult">

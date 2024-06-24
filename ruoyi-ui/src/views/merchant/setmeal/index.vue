@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal, ListDish } from "@/api/merchant/setmeal/index";
+import { listSetmeal, getSetmeal, delSetmeal, addSetmeal, updateSetmeal, ListDish,ListSetmealCategory } from "@/api/merchant/setmeal/index";
 import { listCategory } from '@/api/merchant/category/index'
 export default {
   name: "Setmeal",
@@ -210,7 +210,7 @@ export default {
     // 查询分类列表
     getCategoryList() {
       this.loading = true;
-      listCategory(this.queryParams).then(response => {
+      ListSetmealCategory(this.queryParams).then(response => {
         this.categoryList = response.rows;
         this.total = response.total;
         this.loading = false;

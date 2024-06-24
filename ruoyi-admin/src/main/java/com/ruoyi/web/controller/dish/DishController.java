@@ -80,7 +80,7 @@ public class DishController extends BaseController {
     }
 
     /**
-     * 查询菜品列表
+     * 查询菜品分类列表
      */
     @GetMapping("/categorylist")
     public TableDataInfo categoryList()

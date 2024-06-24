@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询菜品及套餐分类列表
 export function listCategory(query) {
   return request({
-    url: '/merchant/category/list',
+    url: '/admin/category/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listCategory(query) {
 // 查询菜品及套餐分类详细
 export function getCategory(id) {
   return request({
-    url: '/merchant/category/' + id,
+    url: '/admin/category/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getCategory(id) {
 // 新增菜品及套餐分类
 export function addCategory(data) {
   return request({
-    url: '/merchant/category',
+    url: '/admin/category',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addCategory(data) {
 // 修改菜品及套餐分类
 export function updateCategory(data) {
   return request({
-    url: '/merchant/category',
+    url: '/admin/category',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateCategory(data) {
 // 删除菜品及套餐分类
 export function delCategory(id) {
   return request({
-    url: '/merchant/category/' + id,
+    url: '/admin/category/' + id,
     method: 'delete'
   })
 }

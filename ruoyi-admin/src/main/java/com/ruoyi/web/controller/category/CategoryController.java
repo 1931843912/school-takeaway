@@ -30,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2024-06-14
  */
 @RestController
-@RequestMapping("/merchant/category")
+@RequestMapping("/admin/category")
 public class CategoryController extends BaseController {
     @Autowired
     private CategoryService categoryService;
@@ -38,7 +38,7 @@ public class CategoryController extends BaseController {
     /**
      * 查询菜品及套餐分类列表
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:list')")
+    @PreAuthorize("@ss.hasPermi('admin:category:list')")
     @GetMapping("/list")
     public TableDataInfo list(Category category) {
         startPage();
@@ -51,7 +51,7 @@ public class CategoryController extends BaseController {
     /**
      * 查询菜品分类列表
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:list')")
+    @PreAuthorize("@ss.hasPermi('admin:category:list')")
     @GetMapping("/list1")
     public TableDataInfo listTypeOne() {
         startPage();
@@ -64,7 +64,7 @@ public class CategoryController extends BaseController {
     /**
      * 导出菜品及套餐分类列表
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:export')")
+    @PreAuthorize("@ss.hasPermi('admin:category:export')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Category category) {
@@ -76,7 +76,7 @@ public class CategoryController extends BaseController {
     /**
      * 获取菜品及套餐分类详细信息
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:query')")
+    @PreAuthorize("@ss.hasPermi('admin:category:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(categoryService.selectCategoryById(id));
@@ -85,7 +85,7 @@ public class CategoryController extends BaseController {
     /**
      * 新增菜品及套餐分类
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:add')")
+    @PreAuthorize("@ss.hasPermi('admin:category:add')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Category category) {
@@ -95,20 +95,26 @@ public class CategoryController extends BaseController {
     /**
      * 修改菜品及套餐分类
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:edit')")
+    @PreAuthorize("@ss.hasPermi('admin:category:edit')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Category category) {
+        if(categoryService.categoryUsed(category)){
+            return warn("当前分类正在使用中,无法停用");
+        }
         return toAjax(categoryService.updateCategory(category));
     }
 
     /**
      * 删除菜品及套餐分类
      */
-    @PreAuthorize("@ss.hasPermi('merchant:category:remove')")
+    @PreAuthorize("@ss.hasPermi('admin:category:remove')")
     @Log(title = "菜品及套餐分类", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
+        if(categoryService.categorysUsed(ids)){
+            return warn("当前分类中存在正在使用的分类,请先更换后再删除");
+        }
         return toAjax(categoryService.deleteCategoryByIds(ids));
     }
 }

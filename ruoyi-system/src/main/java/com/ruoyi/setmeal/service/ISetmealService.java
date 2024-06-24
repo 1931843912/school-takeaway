@@ -1,5 +1,6 @@
 package com.ruoyi.setmeal.service;
 
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.setmeal.domain.dto.SetmealDTO;
 import com.ruoyi.setmeal.domain.entity.Setmeal;
 
@@ -60,4 +61,6 @@ public interface ISetmealService {
     int changeSetmealStatus(Setmeal setmeal);
 
     List<Setmeal> selectDishList();
+
+    List<Category> categoryList();
 }

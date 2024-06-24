@@ -1,8 +1,10 @@
 package com.ruoyi.setmeal.mapper;
 
+import com.ruoyi.category.domain.entity.Category;
 import com.ruoyi.setmeal.domain.dto.SetmealDTO;
 import com.ruoyi.setmeal.domain.entity.Setmeal;
 import com.ruoyi.setmeal.domain.entity.SetmealDish;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -73,6 +75,9 @@ public interface SetmealMapper {
 
     //批量删除套餐关联菜品
     void deleteSetmealDishs(Long id);
+
+    @Select("select * from sys_category where type=2 and user_id=#{userId} and status=0")
+    List<Category> categoryList(Long userId);
 
     // int changeSetmealStatus(Setmeal setmeal);
 }
