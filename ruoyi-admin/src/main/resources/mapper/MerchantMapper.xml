@@ -21,6 +21,7 @@
 			JOIN sys_user su ON sys_dept.leader = su.nick_name
 		WHERE
 			parent_id = 100
+			and sys_dept.del_flag = 0
     </select>
 
 	<select id="selectMerchantDishList" parameterType="Long" resultType="String">
